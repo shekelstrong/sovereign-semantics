@@ -14,7 +14,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Статические страницы для обеих локалей
   const staticPages: MetadataRoute.Sitemap = [
     {
-      url: `${SITE_URL}${routes.home("ru"),
+      url: `${SITE_URL}${routes.home("ru")}`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1.0,
@@ -26,7 +26,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       },
     },
     {
-      url: `${SITE_URL}${routes.home("en"),
+      url: `${SITE_URL}${routes.home("en")}`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1.0,
@@ -38,7 +38,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       },
     },
     {
-      url: `${SITE_URL}${routes.blog("ru"),
+      url: `${SITE_URL}${routes.blog("ru")}`,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 0.9,
@@ -50,7 +50,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       },
     },
     {
-      url: `${SITE_URL}${routes.blog("en"),
+      url: `${SITE_URL}${routes.blog("en")}`,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 0.9,
@@ -62,7 +62,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       },
     },
     {
-      url: `${SITE_URL}${routes.manifesto("ru"),
+      url: `${SITE_URL}${routes.manifesto("ru")}`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.7,
@@ -74,7 +74,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       },
     },
     {
-      url: `${SITE_URL}${routes.manifesto("en"),
+      url: `${SITE_URL}${routes.manifesto("en")}`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.7,
@@ -86,7 +86,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       },
     },
     {
-      url: `${SITE_URL}${routes.contact("ru"),
+      url: `${SITE_URL}${routes.contact("ru")}`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.4,
@@ -98,7 +98,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       },
     },
     {
-      url: `${SITE_URL}${routes.contact("en"),
+      url: `${SITE_URL}${routes.contact("en")}`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.4,
@@ -118,7 +118,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       (e) => e.slug === article.slug || e.slug.startsWith(article.slug),
     );
     articlePages.push({
-      url: `${SITE_URL}${routes.blogPost(article.slug, "ru"),
+      url: `${SITE_URL}${routes.blogPost(article.slug, "ru")}`,
       lastModified: new Date(article.updated || article.date),
       changeFrequency: "monthly",
       priority: 0.8,
@@ -133,7 +133,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   for (const article of enArticles) {
     if (ruArticles.some((r) => r.slug === article.slug)) continue; // already added
     articlePages.push({
-      url: `${SITE_URL}${routes.blogPost(article.slug, "en"),
+      url: `${SITE_URL}${routes.blogPost(article.slug, "en")}`,
       lastModified: new Date(article.updated || article.date),
       changeFrequency: "monthly",
       priority: 0.8,
