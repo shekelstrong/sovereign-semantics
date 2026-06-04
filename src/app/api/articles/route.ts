@@ -46,7 +46,9 @@ function getRepo() {
 
 function checkAuth(req: Request): boolean {
   const token = process.env.CMS_API_TOKEN;
-  if (!token) return true; // dev mode — allow if not configured
+  // В production токен ОБЯЗАН быть задан — иначе API закрыт.
+  // В development (npm run dev) разрешаем без токена, чтобы было удобно.
+  if (!token) return process.env.NODE_ENV !== "production";
   const auth = req.headers.get("authorization") || "";
   return auth === `Bearer ${token}`;
 }
@@ -73,6 +75,13 @@ async function generateCoverIfRequested(
 
 export async function POST(req: Request) {
   if (!checkAuth(req)) {
+    // Если токен не сконфигурирован в production — сообщаем явно
+    if (!process.env.CMS_API_TOKEN) {
+      return NextResponse.json(
+        { error: "API disabled: CMS_API_TOKEN not configured" },
+        { status: 503 },
+      );
+    }
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
