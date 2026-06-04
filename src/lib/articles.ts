@@ -109,7 +109,18 @@ function parseArticleFile(filename: string, locale: Locale): Article | null {
 
     // Локальная регистрация алиасов wiki-link: текущая статья по своему slug
     // и связанные статьи становятся автодополняемыми.
-    registerWikiAliases({ [slug.toLowerCase()]: data.title as string });
+    // Display label берём КОРОТКИМ (до первого : или —), иначе в тексте
+    // вылазит полный заголовок вида "VPN и криптовалюта в 2026: как собрать
+    // стек приватности, а не набор маркетинговых обещаний" — нечитаемо.
+    const _fullTitle = (data.title as string) || slug;
+    const _shortTitle = (() => {
+      const sep = _fullTitle.search(/[:—]/);
+      const head = sep > 0 ? _fullTitle.slice(0, sep) : _fullTitle;
+      const trimmed = head.trim();
+      if (!trimmed) return slug;
+      return trimmed.length > 60 ? trimmed.slice(0, 57).trimEnd() + "…" : trimmed;
+    })();
+    registerWikiAliases({ [slug.toLowerCase()]: _shortTitle });
 
     return {
       slug,
