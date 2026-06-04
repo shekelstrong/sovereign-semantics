@@ -9,6 +9,7 @@ import { useT } from "@/lib/i18n";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 import { LangSwitcher } from "./LangSwitcher";
 import { routes } from "@/lib/routes";
+import { LogoMark } from "@/components/Logo";
 import type { Locale } from "@/lib/articles-types";
 
 function detectLocale(pathname: string): Locale {
@@ -64,10 +65,8 @@ export function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href={routes.home(locale)} className="flex items-center gap-2.5 group">
-            <div className="relative w-8 h-8 border border-[var(--color-accent)] flex items-center justify-center rotate-45 group-hover:rotate-90 transition-transform duration-500">
-              <span className="font-mono text-sm font-bold text-[var(--color-accent)] -rotate-45 group-hover:-rotate-90 transition-transform duration-500">
-                {locale === "en" ? "A" : "А"}
-              </span>
+            <div className="w-8 h-8 flex items-center justify-center group-hover:rotate-[360deg] transition-transform duration-700">
+              <LogoMark size={32} />
             </div>
             <div className="hidden sm:block">
               <p className="font-mono text-sm font-semibold leading-none">

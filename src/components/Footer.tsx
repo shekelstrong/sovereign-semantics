@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Mail, Send, Code2, MessageCircle, MapPin } from "lucide-react";
+import { LogoMark } from "@/components/Logo";
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -11,8 +12,8 @@ export function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <div className="w-8 h-8 border border-[var(--color-accent)] flex items-center justify-center rotate-45">
-                <span className="font-mono text-sm font-bold text-[var(--color-accent)] -rotate-45">А</span>
+              <div className="w-8 h-8 flex items-center justify-center">
+                <LogoMark size={32} />
               </div>
               <span className="font-mono text-sm font-semibold">АСС</span>
             </div>
