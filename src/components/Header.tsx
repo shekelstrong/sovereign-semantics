@@ -8,18 +8,37 @@ import { Menu, X } from "lucide-react";
 import { useT } from "@/lib/i18n";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 import { LangSwitcher } from "./LangSwitcher";
+import { routes } from "@/lib/routes";
+import type { Locale } from "@/lib/articles-types";
 
-const links = [
-  { href: "/blog", key: "nav.blog" },
-  { href: "/manifesto", key: "nav.manifesto" },
-  { href: "/contact", key: "nav.contact" },
-];
+function detectLocale(pathname: string): Locale {
+  if (pathname.startsWith("/en")) return "en";
+  return "ru";
+}
+
+function prefix(path: string, locale: Locale): string {
+  if (locale === "en") {
+    return path.startsWith("/en") ? path : `/en${path === "/" ? "" : path}`;
+  }
+  // ru: strip /en prefix if any
+  if (path.startsWith("/en/")) return path.slice(3);
+  if (path === "/en") return "/";
+  return path;
+}
 
 export function Header() {
-  const pathname = usePathname();
+  const pathname = usePathname() || "/";
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { t } = useT();
+  const locale = detectLocale(pathname);
+
+  // nav items with locale-aware href
+  const navItems: { href: string; key: string }[] = [
+    { href: routes.blog(locale), key: "nav.blog" },
+    { href: routes.manifesto(locale), key: "nav.manifesto" },
+    { href: routes.contact(locale), key: "nav.contact" },
+  ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -44,25 +63,25 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group">
+          <Link href={routes.home(locale)} className="flex items-center gap-2.5 group">
             <div className="relative w-8 h-8 border border-[var(--color-accent)] flex items-center justify-center rotate-45 group-hover:rotate-90 transition-transform duration-500">
               <span className="font-mono text-sm font-bold text-[var(--color-accent)] -rotate-45 group-hover:-rotate-90 transition-transform duration-500">
-                А
+                {locale === "en" ? "A" : "А"}
               </span>
             </div>
             <div className="hidden sm:block">
               <p className="font-mono text-sm font-semibold leading-none">
-                АРХИТЕКТУРА
+                {locale === "en" ? "ARCHITECTURE" : "АРХИТЕКТУРА"}
               </p>
               <p className="font-mono text-[10px] uppercase tracking-wider text-[var(--color-foreground-muted)] leading-none mt-0.5">
-                СУВЕРЕННЫХ СМЫСЛОВ
+                {locale === "en" ? "OF SOVEREIGN MEANING" : "СУВЕРЕННЫХ СМЫСЛОВ"}
               </p>
             </div>
           </Link>
 
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-1">
-            {links.map((l) => {
+            {navItems.map((l) => {
               const active = pathname === l.href || pathname.startsWith(l.href + "/");
               return (
                 <Link
@@ -83,9 +102,8 @@ export function Header() {
 
           {/* Controls */}
           <div className="flex items-center gap-1.5">
-            <LangSwitcher />
+            <LangSwitcher currentLocale={locale} currentPath={pathname} />
             <ThemeSwitcher />
-            {/* Mobile menu button */}
             <button
               onClick={() => setOpen(!open)}
               className="md:hidden w-9 h-9 flex items-center justify-center border border-[var(--color-border)] hover:border-[var(--color-accent)] transition-colors"
@@ -109,7 +127,7 @@ export function Header() {
             className="md:hidden border-t border-[var(--color-border)] bg-[var(--color-background)] overflow-hidden"
           >
             <div className="px-4 py-3 space-y-1">
-              {links.map((l) => {
+              {navItems.map((l) => {
                 const active = pathname === l.href;
                 return (
                   <Link

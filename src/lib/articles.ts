@@ -3,22 +3,25 @@ import path from "node:path";
 import matter from "gray-matter";
 import { marked } from "marked";
 import slugify from "slugify";
-import type { Article, ArticleTag } from "./articles-types";
+import type { Article, ArticleTag, Locale } from "./articles-types";
 
-export type { Article, ArticleTag } from "./articles-types";
+export type { Article, ArticleTag, Locale } from "./articles-types";
 export { getTagLabel, getAllTags } from "./articles-types";
 
-const ARTICLES_DIR = path.join(process.cwd(), "content", "articles");
+const ARTICLES_ROOT = path.join(process.cwd(), "content", "articles");
+
+/** Маппинг «папка → локаль». На случай если когда-то будет одна папка с frontmatter.locale. */
+function dirFor(locale: Locale): string {
+  return path.join(ARTICLES_ROOT, locale);
+}
 
 function readingTime(text: string): number {
   const words = text.trim().split(/\s+/).length;
   return Math.max(1, Math.round(words / 200));
 }
 
-function ensureArticlesDir(): void {
-  if (!fs.existsSync(ARTICLES_DIR)) {
-    fs.mkdirSync(ARTICLES_DIR, { recursive: true });
-  }
+function ensureDir(dir: string): void {
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 }
 
 function validateFrontmatter(data: Record<string, unknown>): void {
@@ -33,39 +36,65 @@ function validateFrontmatter(data: Record<string, unknown>): void {
   }
 }
 
-export function slugifyTitle(title: string): string {
-  return slugify(title, { lower: true, strict: true, locale: "ru" });
+export function slugifyTitle(title: string, locale: Locale = "ru"): string {
+  return slugify(title, { lower: true, strict: true, locale });
 }
 
-export async function getAllArticles(opts: {
-  includeDrafts?: boolean;
-} = {}): Promise<Article[]> {
-  ensureArticlesDir();
+export async function getAllArticles(
+  opts: { includeDrafts?: boolean; locale?: Locale } = {},
+): Promise<Article[]> {
+  const locales: Locale[] = opts.locale ? [opts.locale] : ["ru", "en"];
+  const all: Article[] = [];
 
-  const files = fs
-    .readdirSync(ARTICLES_DIR)
-    .filter((f) => f.endsWith(".md") || f.endsWith(".mdx"));
+  for (const loc of locales) {
+    const dir = dirFor(loc);
+    ensureDir(dir);
+    const files = fs
+      .readdirSync(dir)
+      .filter((f) => f.endsWith(".md") || f.endsWith(".mdx"));
+    for (const f of files) {
+      const article = parseArticleFile(f, loc);
+      if (article && (opts.includeDrafts || !article.draft)) {
+        all.push(article);
+      }
+    }
+  }
 
-  const articles: Article[] = files
-    .map((file) => parseArticleFile(file))
-    .filter((a): a is Article => a !== null)
-    .filter((a) => opts.includeDrafts || !a.draft)
-    .sort((a, b) => (a.date > b.date ? -1 : 1));
-
-  return articles;
+  return all.sort((a, b) => (a.date > b.date ? -1 : 1));
 }
 
 export async function getArticleBySlug(
   slug: string,
+  locale: Locale = "ru",
 ): Promise<Article | null> {
-  ensureArticlesDir();
-  const filePath = path.join(ARTICLES_DIR, `${slug}.md`);
+  const dir = dirFor(locale);
+  ensureDir(dir);
+  const filePath = path.join(dir, `${slug}.md`);
   if (!fs.existsSync(filePath)) return null;
-  return parseArticleFile(`${slug}.md`);
+  return parseArticleFile(`${slug}.md`, locale);
 }
 
-function parseArticleFile(filename: string): Article | null {
-  const filePath = path.join(ARTICLES_DIR, filename);
+/**
+ * Находит перевод статьи на другую локаль (если существует).
+ * Использует frontmatter.translations или ищет .md файл с тем же
+ * оригинальным slug в другой папке.
+ */
+export async function getArticleTranslation(
+  article: Article,
+  target: Locale,
+): Promise<Article | null> {
+  // Явное указание в frontmatter
+  if (article.translations?.[target]) {
+    return getArticleBySlug(article.translations[target]!, target);
+  }
+  // Эвристика: ищем файл с тем же slug в другой локали
+  const other = await getArticleBySlug(article.slug, target);
+  if (other) return other;
+  return null;
+}
+
+function parseArticleFile(filename: string, locale: Locale): Article | null {
+  const filePath = path.join(dirFor(locale), filename);
   try {
     const raw = fs.readFileSync(filePath, "utf8");
     const { data, content } = matter(raw);
@@ -76,6 +105,7 @@ function parseArticleFile(filename: string): Article | null {
 
     return {
       slug,
+      locale,
       title: data.title as string,
       description: data.description as string,
       date: new Date(data.date as string).toISOString(),
@@ -89,47 +119,57 @@ function parseArticleFile(filename: string): Article | null {
       content,
       html,
       draft: (data.draft as boolean) || false,
-      author: (data.author as string) || "Редакция",
+      author: (data.author as string) || (locale === "ru" ? "Редакция" : "Editorial"),
       cta: data.cta as Article["cta"],
       related: data.related as string[] | undefined,
+      translations: data.translations as Article["translations"],
     };
   } catch (err) {
-    console.error(`[articles] Failed to parse ${filename}:`, err);
+    console.error(`[articles] Failed to parse ${filename} (${locale}):`, err);
     return null;
   }
 }
 
 export async function getArticlesByTag(
   tag: ArticleTag,
+  locale?: Locale,
 ): Promise<Article[]> {
-  const all = await getAllArticles();
+  const all = await getAllArticles({ locale });
   return all.filter((a) => a.tags.includes(tag));
 }
 
-export async function getLatestArticles(n: number): Promise<Article[]> {
-  const all = await getAllArticles();
+export async function getLatestArticles(
+  n: number,
+  locale?: Locale,
+): Promise<Article[]> {
+  const all = await getAllArticles({ locale });
   return all.slice(0, n);
 }
 
-export function articlePath(slug: string): string {
-  return path.join(ARTICLES_DIR, `${slug}.md`);
+export function articlePath(slug: string, locale: Locale = "ru"): string {
+  return path.join(dirFor(locale), `${slug}.md`);
 }
 
 export function writeArticle(
   slug: string,
   frontmatter: Record<string, unknown>,
   content: string,
+  locale: Locale = "ru",
 ): string {
-  ensureArticlesDir();
-  const filePath = articlePath(slug);
-  const data = { ...frontmatter, date: frontmatter.date || new Date().toISOString() };
+  const dir = dirFor(locale);
+  ensureDir(dir);
+  const filePath = path.join(dir, `${slug}.md`);
+  const data = {
+    ...frontmatter,
+    date: frontmatter.date || new Date().toISOString(),
+  };
   const file = matter.stringify(content, data);
   fs.writeFileSync(filePath, file, "utf8");
   return filePath;
 }
 
-export function deleteArticle(slug: string): boolean {
-  const filePath = articlePath(slug);
+export function deleteArticle(slug: string, locale: Locale = "ru"): boolean {
+  const filePath = articlePath(slug, locale);
   if (fs.existsSync(filePath)) {
     fs.unlinkSync(filePath);
     return true;
@@ -137,6 +177,6 @@ export function deleteArticle(slug: string): boolean {
   return false;
 }
 
-export function articleExists(slug: string): boolean {
-  return fs.existsSync(articlePath(slug));
+export function articleExists(slug: string, locale: Locale = "ru"): boolean {
+  return fs.existsSync(articlePath(slug, locale));
 }

@@ -1,21 +1,26 @@
 import Link from "next/link";
-import type { Article } from "@/lib/articles-types";
+import type { Article, Locale } from "@/lib/articles-types";
 import { getTagLabel } from "@/lib/articles-types";
+import { routes } from "@/lib/routes";
 
 interface ArticleCardProps {
   article: Article;
+  locale?: Locale;
 }
 
-export function ArticleCard({ article }: ArticleCardProps) {
-  const date = new Date(article.date).toLocaleDateString("ru-RU", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+export function ArticleCard({ article, locale = "ru" }: ArticleCardProps) {
+  const date = new Date(article.date).toLocaleDateString(
+    locale === "en" ? "en-US" : "ru-RU",
+    {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    },
+  );
 
   return (
     <Link
-      href={`/blog/${article.slug}`}
+      href={routes.blogPost(article.slug, locale)}
       className="group flex flex-col h-full border border-[var(--color-border)] bg-[var(--color-surface)] hover:border-[var(--color-accent)]/40 transition-all duration-300 hover:-translate-y-1"
     >
       <div className="relative aspect-[16/9] overflow-hidden border-b border-[var(--color-border)] bg-[var(--color-background)]">
@@ -46,7 +51,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
         <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[var(--color-foreground-subtle)] mb-2">
           {article.tags?.[0] && (
             <span className="text-[var(--color-accent)]">
-              {getTagLabel(article.tags[0])}
+              {getTagLabel(article.tags[0], locale)}
             </span>
           )}
           <span>·</span>
@@ -54,7 +59,10 @@ export function ArticleCard({ article }: ArticleCardProps) {
           {article.readingTime && (
             <>
               <span>·</span>
-              <span>{article.readingTime} мин</span>
+              <span>
+                {article.readingTime}{" "}
+                {locale === "en" ? "min" : "мин"}
+              </span>
             </>
           )}
         </div>

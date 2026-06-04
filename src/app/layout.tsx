@@ -4,6 +4,7 @@ import { Analytics } from "@/components/Analytics";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Providers } from "@/components/Providers";
+import { LangHtml } from "@/components/LangHtml";
 import "./globals.css";
 
 const inter = Inter({
@@ -59,10 +60,13 @@ export const metadata: Metadata = {
     canonical: "/",
     languages: {
       ru: "/",
-      en: "/?lang=en",
+      en: "/en",
     },
     types: {
-      "application/rss+xml": "/feed.xml",
+      "application/rss+xml": [
+        { url: "/feed.xml", title: "АСС · ru" },
+        { url: "/en/feed.xml", title: "АСС · en" },
+      ],
     },
   },
   openGraph: {
@@ -107,6 +111,7 @@ const jsonLd = {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
       name: "Архитектура суверенных смыслов",
+      alternateName: "Architecture of Sovereign Meaning",
       url: SITE_URL,
       logo: {
         "@type": "ImageObject",
@@ -121,6 +126,7 @@ const jsonLd = {
         contactType: "Editorial",
         email: "vasileneopekin@yandex.ru",
         url: "https://t.me/suveren_media",
+        availableLanguage: ["Russian", "English"],
       },
     },
     {
@@ -128,6 +134,7 @@ const jsonLd = {
       "@id": `${SITE_URL}/#website`,
       url: SITE_URL,
       name: "Архитектура суверенных смыслов",
+      alternateName: "Architecture of Sovereign Meaning",
       inLanguage: ["ru-RU", "en-US"],
       publisher: { "@id": `${SITE_URL}/#organization` },
       potentialAction: {
@@ -156,6 +163,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <LangHtml />
         <Providers>
           <div className="min-h-screen flex flex-col">
             <Header />

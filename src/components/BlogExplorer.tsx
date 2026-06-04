@@ -2,20 +2,39 @@
 
 import { useMemo, useState } from "react";
 import { Search } from "lucide-react";
-import type { Article, ArticleTag } from "@/lib/articles-types";
+import type { Article, ArticleTag, Locale } from "@/lib/articles-types";
 import { getTagLabel } from "@/lib/articles-types";
 import { ArticleCard } from "./ArticleCard";
 
 interface BlogExplorerProps {
   articles: Article[];
   tags: ArticleTag[];
+  locale: Locale;
 }
 
 type Filter = "all" | ArticleTag;
 
-export function BlogExplorer({ articles, tags }: BlogExplorerProps) {
+const T = {
+  ru: {
+    placeholder: "Поиск по заголовку и описанию...",
+    ariaSearch: "Поиск по статьям",
+    all: "Все темы",
+    empty: "Нет результатов",
+    emptyHint: "Попробуйте изменить фильтр или запрос",
+  },
+  en: {
+    placeholder: "Search by title and description...",
+    ariaSearch: "Search articles",
+    all: "All topics",
+    empty: "No results",
+    emptyHint: "Try changing the filter or query",
+  },
+} as const;
+
+export function BlogExplorer({ articles, tags, locale }: BlogExplorerProps) {
   const [filter, setFilter] = useState<Filter>("all");
   const [query, setQuery] = useState("");
+  const t = T[locale];
 
   const filtered = useMemo(() => {
     return articles.filter((a) => {
@@ -39,9 +58,9 @@ export function BlogExplorer({ articles, tags }: BlogExplorerProps) {
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Поиск по заголовку и описанию..."
+            placeholder={t.placeholder}
             className="w-full pl-11 pr-4 py-3 bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-accent)] focus:outline-none font-mono text-sm placeholder:text-[var(--color-foreground-subtle)] transition-colors"
-            aria-label="Поиск по статьям"
+            aria-label={t.ariaSearch}
           />
         </div>
 
@@ -50,7 +69,7 @@ export function BlogExplorer({ articles, tags }: BlogExplorerProps) {
             active={filter === "all"}
             onClick={() => setFilter("all")}
           >
-            Все темы · {articles.length}
+            {t.all} · {articles.length}
           </FilterButton>
           {tags.map((tag) => {
             const count = articles.filter((a) => a.tags.includes(tag)).length;
@@ -61,7 +80,7 @@ export function BlogExplorer({ articles, tags }: BlogExplorerProps) {
                 active={filter === tag}
                 onClick={() => setFilter(tag)}
               >
-                {getTagLabel(tag)} · {count}
+                {getTagLabel(tag, locale)} · {count}
               </FilterButton>
             );
           })}
@@ -72,16 +91,16 @@ export function BlogExplorer({ articles, tags }: BlogExplorerProps) {
       {filtered.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.map((article) => (
-            <ArticleCard key={article.slug} article={article} />
+            <ArticleCard key={article.slug} article={article} locale={locale} />
           ))}
         </div>
       ) : (
         <div className="text-center py-20 border border-dashed border-[var(--color-border)]">
           <p className="font-mono text-sm uppercase tracking-wider text-[var(--color-foreground-muted)] mb-2">
-            Нет результатов
+            {t.empty}
           </p>
           <p className="text-sm text-[var(--color-foreground-subtle)]">
-            Попробуйте изменить фильтр или запрос
+            {t.emptyHint}
           </p>
         </div>
       )}

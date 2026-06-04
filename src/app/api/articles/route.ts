@@ -27,6 +27,9 @@ interface ArticleDraft {
   cta?: { label: string; href: string };
   related?: string[];
   draft?: boolean;
+  lang?: "ru" | "en"; // по умолчанию "ru"
+  /** Slug перевода на другую локаль (если есть) */
+  translations?: { ru?: string; en?: string };
 }
 
 function getRepo() {
@@ -90,8 +93,9 @@ export async function POST(req: Request) {
     );
   }
 
-  const slug = slugifyTitle(body.title);
+  const slug = slugifyTitle(body.title, body.lang || "ru");
   const date = body.date || new Date().toISOString().slice(0, 10);
+  const lang = body.lang || "ru";
 
   // Optional: generate cover
   let coverUrl: string | null = null;
@@ -108,12 +112,13 @@ export async function POST(req: Request) {
     description: body.description,
     date,
     tags: body.tags || [],
-    author: body.author || "Редакция АСС",
+    author: body.author || (lang === "ru" ? "Редакция АСС" : "Editorial"),
     draft: body.draft ?? false,
   };
   if (coverUrl) frontmatter.cover = coverUrl;
   if (body.cta) frontmatter.cta = body.cta;
   if (body.related) frontmatter.related = body.related;
+  if (body.translations) frontmatter.translations = body.translations;
 
   // Serialize as Markdown with frontmatter
   const yaml = Object.entries(frontmatter)
@@ -131,7 +136,7 @@ export async function POST(req: Request) {
     .join("\n");
 
   const fileContent = `---\n${yaml}\n---\n\n${body.content}\n`;
-  const filePath = `content/articles/${slug}.md`;
+  const filePath = `content/articles/${lang}/${slug}.md`;
 
   // Commit via GitHub API (if configured)
   if (process.env.GITHUB_TOKEN) {
@@ -166,7 +171,8 @@ export async function POST(req: Request) {
       return NextResponse.json({
         ok: true,
         slug,
-        url: `/blog/${slug}`,
+        lang,
+        url: `/${lang === "en" ? "en/" : ""}blog/${slug}`,
         github: `${process.env.GITHUB_REPO_OWNER}/${process.env.GITHUB_REPO_NAME}/blob/main/${filePath}`,
         cover: coverUrl,
         message: "Article committed to GitHub. Vercel will deploy shortly.",

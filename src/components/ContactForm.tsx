@@ -2,12 +2,59 @@
 
 import { useState } from "react";
 import { Send, Check, AlertCircle } from "lucide-react";
+import type { Locale } from "@/lib/articles-types";
 
 type Status = "idle" | "sending" | "success" | "error";
 
-export function ContactForm() {
+const T = {
+  ru: {
+    success: "Сообщение отправлено",
+    successHint: "Ответим в течение 24 часов на указанный email.",
+    another: "Отправить ещё →",
+    name: "Имя",
+    email: "Email",
+    topic: "Тема",
+    topics: {
+      collab: "Сотрудничество",
+      author: "Хочу стать автором",
+      press: "Запрос пресс-службы",
+      bug: "Сообщить об ошибке",
+      other: "Другое",
+    },
+    message: "Сообщение",
+    messagePlaceholder: "Расскажите, что у вас на уме…",
+    errorPrefix: "Ошибка отправки",
+    errorHint: "Попробуйте позже или напишите в Telegram.",
+    sending: "Отправка…",
+    submit: "Отправить",
+  },
+  en: {
+    success: "Message sent",
+    successHint: "We will reply within 24 hours to the email you provided.",
+    another: "Send another →",
+    name: "Name",
+    email: "Email",
+    topic: "Topic",
+    topics: {
+      collab: "Collaboration",
+      author: "I want to be an author",
+      press: "Press request",
+      bug: "Report a bug",
+      other: "Other",
+    },
+    message: "Message",
+    messagePlaceholder: "Tell us what is on your mind…",
+    errorPrefix: "Send error",
+    errorHint: "Try again later or write to Telegram.",
+    sending: "Sending…",
+    submit: "Send",
+  },
+} as const;
+
+export function ContactForm({ locale = "ru" }: { locale?: Locale }) {
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState<string | null>(null);
+  const t = T[locale];
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -48,17 +95,15 @@ export function ContactForm() {
         <div className="inline-flex items-center justify-center w-14 h-14 mb-4 border border-[var(--color-accent)] text-[var(--color-accent)]">
           <Check className="w-6 h-6" />
         </div>
-        <h3 className="font-mono text-xl font-semibold mb-2">
-          Сообщение отправлено
-        </h3>
+        <h3 className="font-mono text-xl font-semibold mb-2">{t.success}</h3>
         <p className="text-sm text-[var(--color-foreground-muted)] mb-6">
-          Ответим в течение 24 часов на указанный email.
+          {t.successHint}
         </p>
         <button
           onClick={() => setStatus("idle")}
           className="font-mono text-xs uppercase tracking-wider text-[var(--color-foreground-muted)] hover:text-[var(--color-accent)] transition-colors"
         >
-          Отправить ещё →
+          {t.another}
         </button>
       </div>
     );
@@ -67,9 +112,9 @@ export function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Field label="Имя" name="name" required />
+        <Field label={t.name} name="name" required />
         <Field
-          label="Email"
+          label={t.email}
           name="email"
           type="email"
           required
@@ -82,7 +127,7 @@ export function ContactForm() {
           htmlFor="topic"
           className="block font-mono text-xs uppercase tracking-wider text-[var(--color-foreground-muted)] mb-2"
         >
-          Тема
+          {t.topic}
         </label>
         <select
           id="topic"
@@ -91,11 +136,11 @@ export function ContactForm() {
           defaultValue="collab"
           className="w-full px-4 py-3 bg-[var(--color-background)] border border-[var(--color-border)] focus:border-[var(--color-accent)] focus:outline-none font-mono text-sm transition-colors"
         >
-          <option value="collab">Сотрудничество</option>
-          <option value="author">Хочу стать автором</option>
-          <option value="press">Запрос пресс-службы</option>
-          <option value="bug">Сообщить об ошибке</option>
-          <option value="other">Другое</option>
+          <option value="collab">{t.topics.collab}</option>
+          <option value="author">{t.topics.author}</option>
+          <option value="press">{t.topics.press}</option>
+          <option value="bug">{t.topics.bug}</option>
+          <option value="other">{t.topics.other}</option>
         </select>
       </div>
 
@@ -104,7 +149,7 @@ export function ContactForm() {
           htmlFor="message"
           className="block font-mono text-xs uppercase tracking-wider text-[var(--color-foreground-muted)] mb-2"
         >
-          Сообщение
+          {t.message}
         </label>
         <textarea
           id="message"
@@ -112,7 +157,7 @@ export function ContactForm() {
           required
           rows={6}
           minLength={10}
-          placeholder="Расскажите, что у вас на уме…"
+          placeholder={t.messagePlaceholder}
           className="w-full px-4 py-3 bg-[var(--color-background)] border border-[var(--color-border)] focus:border-[var(--color-accent)] focus:outline-none text-sm leading-relaxed resize-y transition-colors"
         />
       </div>
@@ -121,7 +166,7 @@ export function ContactForm() {
         <div className="flex items-start gap-2 p-3 border border-[var(--color-danger)]/40 bg-[var(--color-danger)]/5 text-sm text-[var(--color-danger)]">
           <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
           <span>
-            Ошибка отправки: {error}. Попробуйте позже или напишите в Telegram.
+            {t.errorPrefix}: {error}. {t.errorHint}
           </span>
         </div>
       )}
@@ -132,11 +177,11 @@ export function ContactForm() {
         className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-[var(--color-accent)] text-[var(--color-accent-foreground)] font-mono text-sm uppercase tracking-wider hover:shadow-[0_0_30px_var(--color-accent-glow)] transition-shadow disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {status === "sending" ? (
-          <>Отправка…</>
+          <>{t.sending}</>
         ) : (
           <>
             <Send className="w-4 h-4" />
-            Отправить
+            {t.submit}
           </>
         )}
       </button>

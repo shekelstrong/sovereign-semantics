@@ -1,4 +1,6 @@
 import { getAllArticles } from "@/lib/articles";
+import { routes } from "@/lib/routes";
+import type { Locale } from "@/lib/articles-types";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://sovereign-semantics.ru";
@@ -21,22 +23,45 @@ function stripMarkdown(md: string): string {
     .trim();
 }
 
-export async function GET() {
-  const articles = await getAllArticles({ includeDrafts: false });
+const META: Record<Locale, { title: string; desc: string; lang: string; editor: string }> = {
+  ru: {
+    title: "Архитектура суверенных смыслов",
+    desc: "Аналитика · IT · ИИ · Технологический суверенитет. Без воды, с фактами.",
+    lang: "ru-ru",
+    editor: "Редакция АСС",
+  },
+  en: {
+    title: "Architecture of Sovereign Meaning",
+    desc: "Analytics · IT · AI · Technological sovereignty. No fluff, only facts.",
+    lang: "en-us",
+    editor: "ACC Editorial",
+  },
+};
+
+export async function GET(
+  _req: Request,
+  { params }: { params: Promise<{ lang: string }> },
+) {
+  const { lang } = await params;
+  const locale: Locale = lang === "en" ? "en" : "ru";
+  const meta = META[locale];
+  const selfUrl = `${SITE_URL}${routes.feed(locale)}`;
+
+  const articles = await getAllArticles({ locale, includeDrafts: false });
   const lastBuild = new Date().toUTCString();
 
   const items = articles
     .map((a) => {
-      const url = `${SITE_URL}/blog/${a.slug}`;
+      const url = `${SITE_URL}${routes.blogPost(a.slug, locale)}`;
       const description = a.description || stripMarkdown(a.content).slice(0, 280);
       return `    <item>
       <title>${escapeXml(a.title)}</title>
       <link>${url}</link>
       <guid isPermaLink="true">${url}</guid>
       <pubDate>${new Date(a.date).toUTCString()}</pubDate>
-      <author>vasileneopekin@yandex.ru (${escapeXml(a.author || "Редакция АСС")})</author>
-      <dc:creator>${escapeXml(a.author || "Редакция АСС")}</dc:creator>
-      <category>${escapeXml(a.tags[0] || "IT")}</category>
+      <author>vasileneopekin@yandex.ru (${escapeXml(a.author || meta.editor)})</author>
+      <dc:creator>${escapeXml(a.author || meta.editor)}</dc:creator>
+      <category>${escapeXml(a.tags[0] || (locale === "en" ? "IT" : "IT"))}</category>
       <description>${escapeXml(description)}</description>
       ${a.cover ? `<enclosure url="${a.cover.startsWith("http") ? a.cover : SITE_URL + a.cover}" type="image/jpeg" />` : ""}
     </item>`;
@@ -49,17 +74,17 @@ export async function GET() {
   xmlns:dc="http://purl.org/dc/elements/1.1/"
   xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Архитектура суверенных смыслов</title>
+    <title>${escapeXml(meta.title)}</title>
     <link>${SITE_URL}</link>
-    <description>Аналитика · IT · ИИ · Технологический суверенитет. Без воды, с фактами.</description>
-    <language>ru-ru</language>
+    <description>${escapeXml(meta.desc)}</description>
+    <language>${meta.lang}</language>
     <lastBuildDate>${lastBuild}</lastBuildDate>
-    <atom:link href="${SITE_URL}/feed.xml" rel="self" type="application/rss+xml" />
-    <managingEditor>vasileneopekin@yandex.ru (Редакция АСС)</managingEditor>
-    <webMaster>vasileneopekin@yandex.ru (Редакция АСС)</webMaster>
+    <atom:link href="${selfUrl}" rel="self" type="application/rss+xml" />
+    <managingEditor>vasileneopekin@yandex.ru (${escapeXml(meta.editor)})</managingEditor>
+    <webMaster>vasileneopekin@yandex.ru (${escapeXml(meta.editor)})</webMaster>
     <image>
       <url>${SITE_URL}/icon</url>
-      <title>Архитектура суверенных смыслов</title>
+      <title>${escapeXml(meta.title)}</title>
       <link>${SITE_URL}</link>
     </image>
 ${items}
