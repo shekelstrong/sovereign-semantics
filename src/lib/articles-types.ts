@@ -31,6 +31,14 @@ export interface Article {
   related?: string[];
   /** Slug переведённой версии в другой локали (если есть) */
   translations?: Partial<Record<Locale, string>>;
+  /** FAQ-блок для JSON-LD FAQPage schema и рендера */
+  faq?: { q: string; a: string }[];
+  /** Person/org об авторе (для E-E-A-T) */
+  authorBio?: {
+    name: string;
+    url?: string;
+    description?: string;
+  };
 }
 
 const TAG_LABELS: Record<Locale, Record<ArticleTag, string>> = {

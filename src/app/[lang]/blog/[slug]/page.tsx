@@ -11,6 +11,8 @@ import {
 } from "@/lib/articles";
 import { routes } from "@/lib/routes";
 import { isValidLocale } from "@/lib/dict";
+import { ArticleJsonLd } from "@/components/ArticleJsonLd";
+import { FAQBlock } from "@/components/FAQBlock";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://sovereign-semantics.ru";
@@ -107,6 +109,7 @@ export default async function BlogPostPage({
 
   return (
     <article className="py-12 sm:py-20">
+      <ArticleJsonLd article={article} locale={locale} />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Translation banner */}
         {translation && (
@@ -202,6 +205,11 @@ export default async function BlogPostPage({
           className="prose-article"
           dangerouslySetInnerHTML={{ __html: article.html }}
         />
+
+        {/* FAQ */}
+        {article.faq && article.faq.length > 0 && (
+          <FAQBlock faq={article.faq} locale={locale} />
+        )}
 
         {/* CTA */}
         {article.cta && (

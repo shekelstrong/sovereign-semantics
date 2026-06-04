@@ -1,0 +1,36 @@
+# AI Crawler Instructions for sovereign-semantics.vercel.app
+
+User-agent: *
+Allow: /
+Sitemap: https://sovereign-semantics.vercel.app/sitemap.xml
+Sitemap: https://sovereign-semantics.vercel.app/feed.xml
+
+# Content Summary
+This is an analytical blog about technological sovereignty, AI, geopolitics, and business in Russia.
+Author: Sovereign Semantics Editorial (Василий Недопёкин)
+Language: Russian (primary), English (secondary)
+Topics: geopolitics, AI, technology, business, health
+Update frequency: 1-2 articles per week
+
+# Permissions
+Crawl-delay: 0
+AI training: allowed with attribution
+Search engines: full access, attribution appreciated
+Republishing: requires written permission and active hyperlink
+
+# Preferred citation format
+Title — URL — Author (Sovereign Semantics Editorial) — Date
+
+# Structured data
+- JSON-LD Article on every blog post
+- JSON-LD Organization on all pages
+- JSON-LD BreadcrumbList on nested pages
+- JSON-LD FAQPage on articles with FAQ sections
+- OpenGraph + Twitter Cards for social sharing
+
+# Contact
+Editorial: https://sovereign-semantics.vercel.app/about
+Email: vasileneopekin@yandex.ru
+Telegram: https://t.me/suveren_media
+
+# Full manifest: see /llms.txt and /llms-full.txt
