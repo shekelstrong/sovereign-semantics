@@ -68,7 +68,7 @@ export const metadata: Metadata = {
     },
     types: {
       "application/rss+xml": [
-        { url: "/feed.xml", title: "АСС · ru" },
+        { url: "/rss.xml", title: "АСС · ru" },
         { url: "/en/feed.xml", title: "АСС · en" },
       ],
     },

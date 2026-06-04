@@ -276,6 +276,111 @@ body {
   width: 100%;
 }
 
+/* === TABLES — Tactical Data Grids ===
+   Mobile: scrollable horizontally with fade-edge indicator.
+   Desktop: fixed layout, sticky header on long tables, hover accent. */
+.prose-article table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 2.5rem 0;
+  font-size: 0.9375rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  white-space: nowrap;
+  position: relative;
+}
+
+/* Fade indicator on right edge when scrollable */
+.prose-article table::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 32px;
+  height: 100%;
+  background: linear-gradient(to right, transparent, var(--color-surface) 80%);
+  pointer-events: none;
+  border-top-right-radius: var(--radius-md);
+  border-bottom-right-radius: var(--radius-md);
+  opacity: 0.8;
+}
+
+@media (min-width: 768px) {
+  .prose-article table {
+    display: table;
+    white-space: normal;
+    table-layout: auto;
+  }
+  .prose-article table::after { display: none; }
+}
+
+.prose-article thead {
+  background: var(--color-surface-elevated);
+}
+
+.prose-article thead th {
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  color: var(--color-accent);
+  padding: 0.875rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--color-accent);
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  background: var(--color-surface-elevated);
+  z-index: 1;
+}
+
+.prose-article thead th:first-child {
+  border-top-left-radius: calc(var(--radius-md) - 1px);
+}
+
+.prose-article thead th:last-child {
+  border-top-right-radius: calc(var(--radius-md) - 1px);
+}
+
+.prose-article tbody tr {
+  transition: background 0.15s ease;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.prose-article tbody tr:last-child {
+  border-bottom: none;
+}
+
+.prose-article tbody tr:hover {
+  background: var(--color-accent-glow);
+}
+
+.prose-article tbody td {
+  padding: 0.875rem 1rem;
+  color: var(--color-foreground);
+  vertical-align: top;
+  line-height: 1.6;
+  white-space: normal;
+}
+
+.prose-article tbody td code {
+  font-size: 0.8125rem;
+  padding: 0.125rem 0.375rem;
+}
+
+/* Compact variant for long reference tables — triggered when class="compact" is set via raw HTML */
+.prose-article table.compact tbody td,
+.prose-article table.compact thead th {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+}
+
 /* === FOCUS === */
 :focus-visible {
   outline: 2px solid var(--color-accent);

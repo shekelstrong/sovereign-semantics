@@ -4,8 +4,11 @@ const DEFAULT_LOCALE = "ru" as const;
 type Locale = "ru" | "en";
 
 // Префиксы статических страниц, которые должны быть локализованы
-// (включая вложенные: /blog/<slug>, /feed.xml и т.д.)
-const STATIC_PREFIXES = ["/blog", "/manifesto", "/contact", "/about", "/feed.xml"];
+// (включая вложенные: /blog/<slug>, /feed.xml и т.д.).
+// /rss.xml и /feed.xml НЕ входят сюда — это RSS-эндпоинты с собственными
+// route handler'ами (src/app/rss.xml/, src/app/[lang]/feed.xml/),
+// которые не должны перехватываться middleware rewrite'ом.
+const STATIC_PREFIXES = ["/blog", "/manifesto", "/contact", "/about"];
 
 function isLocale(s: string): s is Locale {
   return s === "ru" || s === "en";

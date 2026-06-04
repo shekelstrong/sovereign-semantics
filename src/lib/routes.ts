@@ -11,7 +11,10 @@ export const routes = {
   manifesto: (l: Locale = "ru") =>
     l === "en" ? "/en/manifesto" : "/manifesto",
   contact: (l: Locale = "ru") => (l === "en" ? "/en/contact" : "/contact"),
-  feed: (l: Locale = "ru") => (l === "en" ? "/en/feed.xml" : "/feed.xml"),
+  // Канонический RSS для ru = /rss.xml (отдаёт ru-фид напрямую, 200).
+  // Локализованный en-фид = /en/feed.xml (через [lang]/feed.xml/route.ts).
+  // /feed.xml в корне больше не существует — раньше был 307-редирект на /ru/feed.xml.
+  feed: (l: Locale = "ru") => (l === "en" ? "/en/feed.xml" : "/rss.xml"),
   admin: () => "/admin",
 };
 
