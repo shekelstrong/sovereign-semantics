@@ -5,11 +5,9 @@ const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://sovereign-semantics.vercel.app";
 
 /**
- * /rss.xml — алиас для основного фида (стандартное место, которое ищут
- * LLM-краулеры, Дзен, валидаторы). Отдаёт тот же ru-фид что и /feed.xml,
- * но без редиректа — сразу RSS 2.0 (200, application/rss+xml).
- *
- * Раньше был 307 → /ru/feed.xml, из-за чего валидаторы ругались.
+ * /feed.xml — основной RSS-эндпоинт (ru-локализация по умолчанию).
+ * Отдаёт RSS 2.0 напрямую (200, application/rss+xml), без редиректов —
+ * чтобы RSS-ридеры (Дзен, Feedly, W3C validator) сразу видели валидный фид.
  */
 export const dynamic = "force-static";
 
@@ -19,6 +17,7 @@ export async function GET() {
     locale: "ru",
     siteUrl: SITE_URL,
     articles,
+    // atom:link rel="self" ОБЯЗАН указывать на реальный 200-эндпоинт.
     selfUrl: `${SITE_URL}/rss.xml`,
   });
 
