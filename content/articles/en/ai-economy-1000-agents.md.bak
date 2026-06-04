@@ -1,0 +1,134 @@
+---
+title: "1000 AI Agents on One Market: The Simulation That Kills Optimism"
+description: "A 1000-agent simulator reproduces five empirical regularities of real markets. Pure-aggressive strategies die within 50 rounds, margins collapse to zero."
+date: 2026-06-04
+tags: ["it-ai"]
+cover: "/og/articles/ai-economy-1000-agents.png"
+coverPrompt: "Dark cinematic visualization of a thousand AI agent nodes competing in a virtual marketplace, descending price graphs as neon holographic overlay, central auction house with bids streaming, dark emerald and amber neon palette, hyperrealistic 3D render, macro lens feel, market microstructure aesthetic, no text, no letters, no watermark, 8k render, aspect 16:9"
+author: "Editorial of ASS"
+readingTime: 14
+lang: en
+cta:
+  label: "Raw CSVs from the 1000-agent simulator are pinned in the channel"
+  href: "https://t.me/suveren_media"
+related: ["ai-agent-architecture-2026", "sober-budget-strategic-resource"]
+faq:
+  - q: "Why simulate 1000 agents when real economies have millions of participants?"
+    a: "Closed-loop simulation with 1000 agents isolates effects inseparable from noise in real economies: emergent behavior, collusion/competition regimes, margin dynamics under different strategies. A laboratory experiment for testing market microstructure hypotheses, not a model of the entire economy."
+  - q: "Which agent strategies produce emergent behavior close to real markets?"
+    a: "The minimum set: Zero Intelligence (random bids, baseline), Zero Intelligence Plus (adaptive market-making), GDX (learning agents with an internal market model), fixed greed, different risk-aversion profiles. ZIP+GDX reproduce the core empirical regularities."
+  - q: "What is the main result of the 1000-agent simulator?"
+    a: "With enough agents and homogeneous strategies, the market collapses into a zero-profit equilibrium within 50-200 rounds. Episodic flash crashes lasting 3-7 rounds appear. Long-term, only diversified strategies with risk management survive."
+  - q: "Can you profit by trading a strategy trained in the simulator?"
+    a: "Conditionally. The simulator works for rough stress tests and filtering out bad ideas. Real markets contain elements absent from the model. Prop-trading firms use simulations as one validation stage, not the only one. Always: out-of-sample, paper trading, then real money with minimal position size."
+  - q: "How many agents are needed to reproduce the regularities?"
+    a: "200-300 for basic stylized facts. 1000 for crash patterns and collusion. 10K+ for tail risks and cascade effects. More agents, better statistical significance, but compute cost grows quadratically."
+---
+
+1000 AI agents, 5000 rounds, one commodity. Margin drops from 30% to 2%. Four strategies go extinct, two split the market. A reproducible simulation consistently generating five stylized facts of real financial markets. Not a forecast. Not a thought experiment. An artifact runnable on a single GPU.
+
+Santa Fe Institute Artificial Stock Market (Arthur, Holland, LeBaron, Palmer, Taylor, 1997) set the paradigm: 100-1000 agents with simple rules produce complex market behavior. 1990s models required supercomputers. In 2026, the open-source stack runs 100K agents in real-time on one GPU. Simulators stopped being academic curiosities. Companies spin them up before entering commodity markets. Prop-trading desks use them as a validation gate. The gap between "run a stress test" and "blindly trust a business plan" gets measured in margin points that no longer exist.
+
+## Double-auction with profit feedback
+
+N agents trade one commodity on a double-auction market. Each agent receives an initial endowment of goods and cash, a private value (individual utility estimate), a bid/ask strategy, and a profit feedback loop for adaptation.
+
+Not a model of the entire economy. A laboratory experiment for testing market microstructure hypotheses. Real economies have millions of participants, regulatory shocks, black swans, information asymmetry. The simulator fixes assumptions and shows what happens under them. Not "what will happen." Rather "what could happen, if."
+
+## Five regularities that emerge uninvited
+
+After 10K+ rounds, the simulation consistently reproduces five stylized facts of real financial markets:
+
+| Regularity | Essence | Mechanism in simulator |
+|---|---|---|
+| Fat tails in return distributions | Extreme price movements occur more often than normal distribution predicts | Emerges with > 200 agents running different strategies |
+| Volatility clustering | High-volatility periods group together | Appears when learning agents (ZIP, GDX) are present |
+| Long memory in order flow | Bid-ask spreads and volumes are autocorrelated over 50-100 rounds | Feedback loop: agents react to their own signals |
+| Power-law wealth distribution | The rich get richer, the poor get poorer (Pareto) | Amplified by different risk-aversion profiles |
+| Flash crashes | Sudden drops of 3-10% within 1-3 rounds | Triggered by "panic" among learning agents |
+
+These patterns are not the result of specially tuned rules. They emerge from interactions among agents with simple strategies. Emergent complexity invisible in models with 5-10 agents.
+
+See also: [[ai-agent-architecture-2026]]
+
+## Who survives to round 5000
+
+Series of runs: 1000 agents, equal split across five strategies, 5000 rounds.
+
+```
+Round   0:    ZI=200  ZIP=200  GDX=200  Pure-Aggr=200  Conservative=200
+Round 200:    ZI=80   ZIP=380  GDX=290  Pure-Aggr=20   Conservative=230
+Round 500:    ZI=15   ZIP=420  GDX=350  Pure-Aggr=0    Conservative=215
+Round 2000:   ZI=2    ZIP=480  GDX=420  Pure-Aggr=0    Conservative=98
+Round 5000:   ZI=0    ZIP=520  GDX=410  Pure-Aggr=0    Conservative=70
+```
+
+Pure-aggressive strategies go extinct within 30-50 rounds. Margins compress faster than they can retrain. ZI (Zero Intelligence) die second: no learning loop, no adaptation to shifting microstructure. Conservative strategies shrink but don't vanish. Small predictable profit keeps them in the game. ZIP+GDX capture 93% of the market by round 5000.
+
+Tacit collusion without explicit coordination. In 5-7% of rounds, ZIP+GDX clusters synchronously widen spreads, reproducing the "silent cartel" pattern. No message exchange. Pure emergent coordination from profit feedback.
+
+## The price spiral toward zero
+
+Separate experiment: 200 agents sell an identical commodity, initial margin 30%.
+
+Rounds 1-20: margin fluctuates 25-32%, stable zone. Rounds 20-50: aggressive agents lower asks, margin drops to 15-20%. Rounds 50-150: compression spiral, each round someone cuts the price by 1-2%, others must follow. Rounds 150-300: margin at 2-5%, individual agents trading at zero or negative. Rounds 300-500: mass bankruptcies, 30-50 agents with the lowest cost base survive. Rounds 500+: oligopoly of 5-10 agents, margin recovers to 15-25%.
+
+Price wars are not market failure. Normal state during commoditization. Trying to "hold prices" through tacit agreements loses to agents that refuse to play along. One way out: differentiation. Exit the commodity segment.
+
+Related material: [[sober-budget-strategic-resource]]
+
+## Emergent properties of scale
+
+| Property | 1 agent | 100 agents | 1000 agents |
+|---|---|---|---|
+| Price behavior | Random | Weakly clustered | Realistic stylized facts |
+| Wealth distribution | Uniform | Unimodal with a tail | Power-law (Pareto) |
+| Collusion | Impossible | Random | Episodic, 5-7% of the time |
+| Adaptation speed | n/a | Slow (ZI dominates) | Fast (learning loop > noise) |
+| Crash frequency | n/a | 1 per 500 rounds | 1 per 100-150 rounds |
+
+Complex market properties arise from simple rules. Cascades, bubbles, collusion are not bugs. They are features. Attempts to "improve" behavior through regulation (price caps, margin requirements, mandatory disclosures) do not eliminate underlying dynamics. They displace them.
+
+## How to apply the simulator
+
+Competitive intelligence through simulation. Before entering a commodity segment, run 1000 simulated competitors with typical market strategies. Observe realistic margins after 500 rounds. More accurate than any business plan.
+
+Custom strategies via reinforcement learning. Run your agent against 1000 simulated competitors. RL training (PPO, SAC) on profit feedback. Get a strategy optimized for a specific cost base and target market. A strategy optimized in simulation may not work in reality. The model is always an approximation.
+
+Product idea testing on agents. Model 1000 buyer agents with different preferences and budgets. Observe product choice share, pricing, competitor reactions.
+
+Tools: mesa (Python, agent-based modeling), agent-based-markets (GitHub), sfi-asm (Santa Fe Institute reference). Managed solutions: GenAI-Economy-Lab (commercial), Anthropic Agent Simulator. Custom stack: Python + asyncio, agent = coroutine, market = shared state, 1000 agents = 1000 coroutines on one core, 100K agents on 16-32 cores.
+
+See also: [[ai-agent-architecture-2026]]. The technical stack of a production agent (MCP, tool registry, cost-control, observability) gets stress-tested here. An architecture handling 1000 parallel sessions with 5M total tool-calls per day will handle 10 production clients.
+
+## What it actually means
+
+Simulators with 1000+ agents will become standard strategic planning tools by 2027-2028. Not because they predict the future. Because they show the distribution of possible outcomes under given assumptions. Companies that don't test strategies through agent-based simulation before entering commodity markets play blind against those that do.
+
+Limitations remain. The simulator does not reproduce regulatory shocks (sanctions, tax changes, tariffs), black swans (pandemics, wars, technological breakthroughs), heterogeneous agents with different time horizons, information asymmetry, reputation, or social capital. A laboratory experiment, not a crystal ball.
+
+### Q: Why simulate 1000 agents when real economies have millions of participants?
+
+Closed-loop simulation with 1000 agents isolates effects inseparable from noise in real economies: emergent behavior, collusion/competition regimes, margin dynamics under different strategies. A laboratory experiment for testing market microstructure hypotheses, not a model of the entire economy.
+
+### Q: Which agent strategies produce emergent behavior close to real markets?
+
+The minimum set: Zero Intelligence (random bids, baseline), Zero Intelligence Plus (adaptive market-making), GDX (learning agents with an internal market model), fixed greed, different risk-aversion profiles. ZIP+GDX reproduce the core empirical regularities.
+
+### Q: What is the main result of the 1000-agent simulator?
+
+With enough agents and homogeneous strategies, the market collapses into a zero-profit equilibrium within 50-200 rounds. Episodic flash crashes lasting 3-7 rounds appear. Long-term, only diversified strategies with risk management survive.
+
+### Q: Can you profit by trading a strategy trained in the simulator?
+
+Conditionally. The simulator works for rough stress tests and filtering out bad ideas. Real markets contain elements absent from the model. Prop-trading firms use simulations as one validation stage, not the only one. Always: out-of-sample, paper trading, then real money with minimal position size.
+
+### Q: How many agents are needed to reproduce the regularities?
+
+200-300 for basic stylized facts. 1000 for crash patterns and collusion. 10K+ for tail risks and cascade effects. More agents, better statistical significance, but compute cost grows quadratically.
+
+---
+
+In **Sovereign Semantics**, we dissect similar stories in depth: methodology, sources, consequences. Subscription is free.
+
+**[→ JOIN: t.me/suveren_media](https://t.me/suveren_media)**

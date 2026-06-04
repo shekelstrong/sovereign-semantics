@@ -1,3 +1,4 @@
+```md
 ---
 title: "Running 70B models locally in 2026: hardware, costs, and where cloud still wins"
 description: "A single RTX 4090 now runs Llama 3.3 70B at 22 tokens/sec. Here is the hardware, the math, and the hard limits of local LLM inference in 2026."
@@ -151,3 +152,4 @@ Q4_K_M and Q5_K_M formats from llama.cpp produce <3% quality degradation on reas
 In **Sovereign Semantics**, similar topics get deeper analysis: methodology, sources, consequences. Subscription is free.
 
 **[→ UNIQUE: t.me/suveren_media](https://t.me/suveren_media)**
+```

@@ -11,18 +11,21 @@ cta:
   label: "Raw CSVs from the 1000-agent simulator — pinned in the channel"
   href: "https://t.me/suveren_media"
 related: ["ai-agent-architecture-2026", "sober-budget-strategic-resource"]
+faq:
+  - q: "Why simulate 1000 agents when real economies have millions of participants?"
+    a: "Closed-loop simulation with 1000 agents isolates effects inseparable from noise in real economies: emergent behavior, collusion/competition regimes, margin dynamics under different strategies. Laboratory experiment for testing market microstructure hypotheses, not a model of the entire economy."
+  - q: "Which agent strategies produce emergent behavior closest to real markets?"
+    a: "Minimum viable set: Zero Intelligence (random orders, baseline), Zero Intelligence Plus (adaptive market-making), GDX (learning agents with internal market model), fixed greed, varying risk-aversion profiles. ZIP+GDX reproduces the core empirical regularities."
+  - q: "What is the main result of the 1000-agent simulator?"
+    a: "With enough agents and homogeneous strategies, the market collapses into a zero-profit equilibrium within 50-200 rounds. Episodic flash-crashes lasting 3-7 rounds appear. Long-term, only diversified strategies with risk management survive."
+  - q: "Can you profit from a strategy trained in the simulator?"
+    a: "Conditionally. The simulator works for rough stress-testing and filtering failed ideas. Real markets contain elements absent from the model. Prop-trading firms use simulations as one validation stage, not the only one. Always: out-of-sample, paper trading, then real money at minimal position size."
+  - q: "How many agents are needed to reproduce the regularities?"
+    a: "200-300 for basic stylized facts. 1000 for crash patterns and collusion. 10K+ for tail risks and cascade effects. More agents yield better statistical significance, but compute cost grows quadratically."
 translations:
   ru: "ai-economy-1000-agents"
-faq:
-  - q: "Why do pure-aggressive strategies fail so quickly in the simulation"
-    a: "Aggressive strategies trigger destructive price wars that erode profitability for everyone. Within 50 rounds, hyper-competitive agents either go bankrupt or are forced to adapt, proving ruthless tactics are mathematically unsustainable."
-  - q: "What exactly are the "five empirical regularities" the simulation reproduces"
-    a: "These are well-documented real-market phenomena like fat-tail returns, clustered volatility, and high trading volume. The simulation mirrors these patterns organically, proving its AI agents behave like real human traders."
-  - q: "Do margins really collapse to zero for everyone"
-    a: "Average market margins trend to zero due to intense competition, but individual agents can still survive. The key is shifting from aggressive extraction to adaptive strategies that preserve minimal profitability."
-  - q: "What is the main takeaway for real-world businesses"
-    a: "Purely aggressive, profit-maximizing behavior ultimately destroys the market itself. Businesses must prioritize strategic adaptation and market sustainability over short-term dominance to survive."
 ---
+
 1000 AI agents, 5000 rounds, one commodity. Margin drops from 30% to 2%. Four strategies go extinct; two divide the market. A reproducible simulation generates five empirical regularities found in real financial markets. Not a forecast. Not a thought experiment. An artifact that runs on a single GPU.
 
 The Santa Fe Institute Artificial Stock Market (Arthur, Holland, LeBaron, Palmer, Taylor, 1997) set the paradigm: a hundred agents with simple rules produce complex market behavior. Models from the 90s demanded supercomputers. In 2026, an open-source stack runs 100K agents in real-time on one GPU. Simulators stopped being academic curiosities long ago. Companies spin them up before entering commodity markets. Prop-trading desks use them as a validation gate. The gap between "running a stress test" and "blindly trusting a business plan" is measured in margin points that no longer exist after round 500.
@@ -154,19 +157,3 @@ Conditionally. The simulator works for rough stress-testing and filtering failed
 In **Sovereign Semantics**, similar stories get dissected deeper: methodology, sources, consequences. Subscription is free.
 
 **[→ UNIQUE: t.me/suveren_media](https://t.me/suveren_media)**
-
-### Q: Why do pure-aggressive strategies fail so quickly in the simulation?
-
-Aggressive strategies trigger destructive price wars that erode profitability for everyone. Within 50 rounds, hyper-competitive agents either go bankrupt or are forced to adapt, proving ruthless tactics are mathematically unsustainable.
-
-### Q: What exactly are the "five empirical regularities" the simulation reproduces?
-
-These are well-documented real-market phenomena like fat-tail returns, clustered volatility, and high trading volume. The simulation mirrors these patterns organically, proving its AI agents behave like real human traders.
-
-### Q: Do margins really collapse to zero for everyone?
-
-Average market margins trend to zero due to intense competition, but individual agents can still survive. The key is shifting from aggressive extraction to adaptive strategies that preserve minimal profitability.
-
-### Q: What is the main takeaway for real-world businesses?
-
-Purely aggressive, profit-maximizing behavior ultimately destroys the market itself. Businesses must prioritize strategic adaptation and market sustainability over short-term dominance to survive.

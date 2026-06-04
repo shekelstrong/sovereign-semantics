@@ -11,18 +11,21 @@ cta:
   label: "12-month family financial plan template (XLSX) — in the channel"
   href: "https://t.me/suveren_media"
 related: ["ai-economy-1000-agents", "vpn-crypto-2026"]
+faq:
+  - q: "How is a family financial plan different from a regular monthly budget?"
+    a: "A monthly budget records what happened: spent 50K, saved 5K, zero left. A family financial plan is a coordinate system for 12-36 months that factors in inflation, currency risk, irregular expenses (insurance, vacations, education, car repair), and strategic goals (housing, early retirement). A budget is a one-dimensional track. A plan is a three-dimensional map."
+  - q: "How do I account for inflation in a financial plan when it shifts every quarter?"
+    a: "Use a scenario approach: base (CPI +6% per year), stress (CPI +12%), optimistic (CPI +3%). Recalculate every 3 months with real data. If actual inflation exits the planned scenario, adjust the savings rate and discretionary spending. What matters is not nominal figures but the purchasing power of a fixed basket."
+  - q: "What percentage of income should go to savings in 2026?"
+    a: "Depends on life stage: early career (25-35) at least 15-20%, mid-career (35-50) 20-30%, pre-retirement (50+) 25-35%. This is after all mandatory expenses (housing, food, transport, insurance). With real inflation at 8-12% in 2026, the lower bound of 15% yields minus 3-7% real purchasing power every year. 20-25% is the baseline for capital preservation."
+  - q: "Should I start investing before the reserve is built up?"
+    a: "No. Without a 6-12 month reserve, any investment is speculation with borrowed money. When a shock hits, you sell assets at a loss to cover living expenses. Reserve first, then investments."
+  - q: "What if my income is unstable (freelance, seasonality)?"
+    a: "Calculate the minimum monthly income over the last 12 months and build the plan from that floor. Peak months push 50%+ into reserve and investments. Down months operate on the minimum plus reserve drawdown."
 translations:
   ru: "sober-budget-strategic-resource"
-faq:
-  - q: "Why do 90% of family budgets collapse within three months?
-Most budgets fail because they rely on ideal scenarios and ignore irregular expenses. Without a built-in buffer for emergencies, a single unexpected cost destroys the entire financial structure."
-    a: "### Q: How do I factor inflation into a 2026 financial plan?
-Add a 7–10% markup to essential spending categories like food and utilities. Recalculate these figures quarterly to match actual price increases rather than relying on static annual projections."
-  - q: "How should a family manage currency risks right now?
-Split your savings between local and stable foreign currencies to hedge against devaluation. Keep a 1–2 month operational fund in local currency, and park long-term reserves in foreign assets."
-    a: "### Q: How do we plan with uncertain income?
-Build your baseline budget using your absolute minimum expected monthly earnings. Direct all income above this baseline straight into a 3–6 month emergency fund to cover gaps during low-earning periods."
 ---
+
 # A Sober Budget: Family Financial Planning as Strategic Resource
 
 Nine out of ten family budgets stop functioning within 90 days of creation. The cause is not laziness or lack of discipline. The cause is architecture: most budgets are built as expense trackers, not as decision-making systems for a 3-5 year horizon.
@@ -153,16 +156,4 @@ Calculate the minimum monthly income over the last 12 months and build the plan 
 
 In **Sovereign Semantics**, we dissect similar narratives in depth: methodology, sources, consequences. Subscription is free.
 
-**[→ UNIQUE: t.me/suveren_media](https://t.me/suveren_media)**
-
-### Q: Why do 90% of family budgets collapse within three months?
-Most budgets fail because they rely on ideal scenarios and ignore irregular expenses. Without a built-in buffer for emergencies, a single unexpected cost destroys the entire financial structure.
-
-### Q: How do I factor inflation into a 2026 financial plan?
-Add a 7–10% markup to essential spending categories like food and utilities. Recalculate these figures quarterly to match actual price increases rather than relying on static annual projections.
-
-### Q: How should a family manage currency risks right now?
-Split your savings between local and stable foreign currencies to hedge against devaluation. Keep a 1–2 month operational fund in local currency, and park long-term reserves in foreign assets.
-
-### Q: How do we plan with uncertain income?
-Build your baseline budget using your absolute minimum expected monthly earnings. Direct all income above this baseline straight into a 3–6 month emergency fund to cover gaps during low-earning periods.
+**[→ УНИКАЛЕН: t.me/suveren_media](https://t.me/suveren_media)**

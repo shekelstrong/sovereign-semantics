@@ -37,32 +37,42 @@ def get_en_for_ru(ru_slug):
         return m.group(1)
     return ru_slug  # fallback: same slug
 
-def run_one(locale, slug, timeout=600):
-    print(f"\n{'='*70}")
-    print(f"🚀 {locale}/{slug}")
-    print(f"{'='*70}")
-    t0 = time.time()
-    try:
-        r = subprocess.run(
-            ["python3", str(SCRIPT), locale, slug],
-            cwd=str(REPO),
-            capture_output=True,
-            text=True,
-            timeout=timeout,
-        )
-        dt = time.time() - t0
-        if r.returncode == 0:
-            print(r.stdout)
-            print(f"⏱️  total: {dt:.1f}s ✅")
-            return True
-        else:
-            print(f"❌ exit {r.returncode} in {dt:.1f}s")
-            print("STDOUT:", r.stdout[-500:])
-            print("STDERR:", r.stderr[-500:])
-            return False
-    except subprocess.TimeoutExpired:
-        print(f"❌ TIMEOUT after {timeout}s")
-        return False
+def run_one(locale, slug, timeout=1500, max_attempts=2):
+    """Run rewrite-article-glm.py для одной статьи. Retry на timeout/краш."""
+    last_err = None
+    for attempt in range(1, max_attempts + 1):
+        print(f"\n{'='*70}")
+        print(f"🚀 {locale}/{slug}" + (f"  [attempt {attempt}/{max_attempts}]" if attempt > 1 else ""))
+        print(f"{'='*70}")
+        t0 = time.time()
+        try:
+            r = subprocess.run(
+                ["python3", str(SCRIPT), locale, slug],
+                cwd=str(REPO),
+                capture_output=True,
+                text=True,
+                timeout=timeout,
+            )
+            dt = time.time() - t0
+            if r.returncode == 0:
+                print(r.stdout)
+                print(f"⏱️  total: {dt:.1f}s ✅")
+                return True
+            else:
+                print(f"❌ exit {r.returncode} in {dt:.1f}s")
+                print("STDOUT:", r.stdout[-500:])
+                print("STDERR:", r.stderr[-500:])
+                last_err = f"exit {r.returncode}"
+        except subprocess.TimeoutExpired:
+            dt = time.time() - t0
+            print(f"❌ TIMEOUT after {timeout}s ({dt:.1f}s elapsed)")
+            last_err = "timeout"
+        if attempt < max_attempts:
+            wait = 10 * attempt
+            print(f"⏳  retry через {wait}s...")
+            time.sleep(wait)
+    print(f"💀 {locale}/{slug}: все {max_attempts} попыток провалились ({last_err})")
+    return False
 
 def main():
     args = sys.argv[1:]

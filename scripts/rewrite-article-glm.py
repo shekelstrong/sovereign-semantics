@@ -143,7 +143,7 @@ translations:
 Тебе будет дана существующая версия статьи (frontmatter + тело) и указание — это rewrite или translation. Сохрани факты и ссылки, перепиши стиль и структуру по правилам выше.
 """
 
-def call_glm(messages, max_tokens=8000, temperature=0.7, max_retries=3):
+def call_glm(messages, max_tokens=8000, temperature=0.7, max_retries=3, http_timeout=1500):
     body = json.dumps({
         "model": "glm-5.1",
         "messages": messages,
@@ -161,7 +161,7 @@ def call_glm(messages, max_tokens=8000, temperature=0.7, max_retries=3):
                 },
                 method="POST",
             )
-            with urllib.request.urlopen(req, timeout=300) as r:
+            with urllib.request.urlopen(req, timeout=http_timeout) as r:
                 resp = json.loads(r.read().decode())
             if "error" in resp:
                 raise RuntimeError(f"API error: {json.dumps(resp, ensure_ascii=False)[:300]}")
@@ -170,10 +170,10 @@ def call_glm(messages, max_tokens=8000, temperature=0.7, max_retries=3):
             if not content:
                 raise RuntimeError(f"empty content (reasoning={len(msg.get('reasoning',''))} chars, finish={resp['choices'][0].get('finish_reason')})")
             return content, resp.get("usage", {})
-        except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError) as e:
+        except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, ConnectionError) as e:
             if attempt < max_retries - 1:
-                wait = 5 * (attempt + 1)
-                print(f"  retry {attempt+1}/{max_retries} after {wait}s: {e}")
+                wait = 10 * (attempt + 1)
+                print(f"  retry {attempt+1}/{max_retries} after {wait}s: {type(e).__name__}: {e}")
                 time.sleep(wait)
             else:
                 raise
