@@ -291,3 +291,41 @@ body {
 .text-pretty {
   text-wrap: pretty;
 }
+
+/* ===========================================
+   LIGHT THEME
+   Активируется через data-theme="light" на <html>
+   Тёмная — дефолт (без атрибута или data-theme="dark")
+   =========================================== */
+:root[data-theme="light"] {
+  --color-background: #f6f7f9;
+  --color-surface: #ffffff;
+  --color-surface-elevated: #fafbfc;
+  --color-border: #e2e6ec;
+  --color-border-subtle: #eef0f4;
+
+  --color-foreground: #0c1116;
+  --color-foreground-muted: #5a6473;
+  --color-foreground-subtle: #8b95a3;
+
+  --color-accent: #059669;
+  --color-accent-foreground: #ffffff;
+  --color-accent-glow: rgba(5, 150, 105, 0.18);
+
+  --color-blue: #2563eb;
+  --color-blue-glow: rgba(37, 99, 235, 0.12);
+}
+
+/* Плавный переход между темами */
+html {
+  transition: background-color 0.3s ease;
+}
+body,
+header,
+footer,
+main,
+section,
+article,
+nav {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}

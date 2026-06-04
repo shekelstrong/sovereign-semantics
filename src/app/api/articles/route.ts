@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { Octokit } from "@octokit/rest";
 import { slugifyTitle } from "@/lib/articles";
+import { generateCover, extractOrBuildPrompt } from "@/lib/image-gen";
 
 /**
  * POST /api/articles
@@ -49,36 +50,22 @@ function checkAuth(req: Request): boolean {
 
 async function generateCoverIfRequested(
   prompt: string,
-  title: string,
+  slug: string,
 ): Promise<string | null> {
-  const provider = process.env.IMAGE_PROVIDER; // 'openai' | 'replicate' | 'fal' | ''
-  if (!provider) return null;
-
-  if (provider === "openai" && process.env.OPENAI_API_KEY) {
-    const r = await fetch("https://api.openai.com/v1/images/generations", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: "dall-e-3",
-        prompt,
-        size: "1792x1024",
-        quality: "hd",
-        n: 1,
-      }),
-    });
-    if (!r.ok) {
-      console.error("[cover] OpenAI error:", await r.text());
-      return null;
-    }
-    const j = await r.json();
-    return j.data?.[0]?.url || null;
+  // Только OpenRouter / Nano Banana 2
+  if (!process.env.OPENROUTER_API_KEY) {
+    console.warn(
+      "[cover] OPENROUTER_API_KEY not set. Skipping cover generation.",
+    );
+    return null;
   }
-
-  console.warn(`[cover] Provider ${provider} not implemented, skipping`);
-  return null;
+  try {
+    const result = await generateCover(prompt, slug);
+    return result.url;
+  } catch (err) {
+    console.error("[cover] OpenRouter error:", err);
+    return null;
+  }
 }
 
 export async function POST(req: Request) {
@@ -109,11 +96,8 @@ export async function POST(req: Request) {
   // Optional: generate cover
   let coverUrl: string | null = null;
   if (body.cover === true) {
-    const prompt =
-      `Cinematic hyperrealistic dark-mode cover for an analytical article titled "${body.title}". ` +
-      `Abstract architectural visualization, glowing data structures, emerald and cold blue neon accents, ` +
-      `8k, no text, no letters, conceptual tech art.`;
-    coverUrl = await generateCoverIfRequested(prompt, body.title);
+    const prompt = extractOrBuildPrompt(body.content, body.title, body.description);
+    coverUrl = await generateCoverIfRequested(prompt, slug);
   } else if (typeof body.cover === "string") {
     coverUrl = body.cover;
   }

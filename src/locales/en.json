@@ -1,0 +1,92 @@
+{
+  "nav": {
+    "blog": "Blog",
+    "manifesto": "Manifesto",
+    "contact": "Contact",
+    "admin": "Admin",
+    "theme": "Theme",
+    "language": "Language"
+  },
+  "hero": {
+    "tagline": "Sober mind · Clear code · Sovereignty",
+    "read": "Read longreads",
+    "manifesto": "Manifesto",
+    "stats": {
+      "articles": "Longreads",
+      "topics": "Topics",
+      "nofluff": "No fluff"
+    }
+  },
+  "manifesto": {
+    "title": "Analytics as a tool, not entertainment",
+    "principles": {
+      "sober": {
+        "title": "Sober mind",
+        "text": "A systemic view over emotions. Logic, facts, macroeconomic cycles. No clichés or empty phrases."
+      },
+      "architecture": {
+        "title": "Architecture of meaning",
+        "text": "Technology, politics, economy are not separate topics but a single map. Connections matter more than events."
+      },
+      "sovereignty": {
+        "title": "Sovereignty",
+        "text": "Freedom for business and technology. Money is a tool of influence, not an end in itself. Russia is a country of opportunity for clear minds."
+      }
+    }
+  },
+  "latest": {
+    "title": "Latest materials",
+    "all": "All articles"
+  },
+  "projects": {
+    "title": "Our projects",
+    "subtitle": "IT solutions we build with our hands. Each one is live, not a pitch deck."
+  },
+  "blog": {
+    "title": "Blog",
+    "search": "Search articles...",
+    "all_tags": "All topics",
+    "empty": "No articles",
+    "load_more": "Load more",
+    "no_results": "Nothing found"
+  },
+  "article": {
+    "back": "← All articles",
+    "min_read": "min read",
+    "draft": "Draft",
+    "related": "Related materials",
+    "share": "Share",
+    "copy_link": "Copy link",
+    "copied": "Copied"
+  },
+  "contact": {
+    "title": "Contact editorial",
+    "subtitle": "Partnerships, analytical requests, material suggestions. Form data is encrypted and does not leak to external trackers.",
+    "channels": "Direct channels",
+    "form": "Feedback form",
+    "name": "Name",
+    "email": "Email",
+    "subject": "Subject",
+    "message": "Message",
+    "send": "Send",
+    "sending": "Sending...",
+    "success": "Message sent. We'll respond within 24 hours.",
+    "error": "Send error. Try later or write directly."
+  },
+  "manifesto_page": {
+    "title": "Manifesto",
+    "subtitle": "Project philosophy. Technological sovereignty, sober thinking, constructive patriotism."
+  },
+  "footer": {
+    "sections": "Sections",
+    "contacts": "Contacts",
+    "subscribe": "Subscribe",
+    "tagline": "Sober mind · Clear code · Technological sovereignty",
+    "rights": "All rights reserved"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Retry"
+  }
+}

@@ -3,76 +3,47 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@/components/Analytics";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { Providers } from "@/components/Providers";
 import "./globals.css";
 
 const inter = Inter({
-  variable: "--font-inter",
   subsets: ["latin", "cyrillic"],
   display: "swap",
+  variable: "--font-inter",
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
+const jetbrains = JetBrains_Mono({
   subsets: ["latin", "cyrillic"],
   display: "swap",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-jetbrains-mono",
 });
 
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://sovereign-semantics.vercel.app";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://sovereign-semantics.ru";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Архитектура суверенных смыслов — Аналитика. IT. ИИ.",
+    default: "Архитектура суверенных смыслов — аналитика, IT, ИИ",
     template: "%s · Архитектура суверенных смыслов",
   },
   description:
-    "Аналитический блог о технологическом суверенитете, IT-решениях, искусственном интеллекте, экономике и трезвом мышлении. Лонгриды, стратегии, практика.",
+    "Аналитический блог о технологическом суверенитете России, IT, искусственном интеллекте, экономике и трезвом мышлении. Лонгриды без воды и клише.",
   keywords: [
     "технологический суверенитет",
-    "IT аналитика",
+    "IT Россия",
     "искусственный интеллект",
     "архитектура смыслов",
-    "Россия IT",
-    "макроэкономика",
     "трезвое мышление",
-    "когнитивная эффективность",
-    "здоровый образ жизни",
-    "ЗОЖ",
+    "ЗОЖ когнитивная эффективность",
+    "российская аналитика",
   ],
-  authors: [{ name: "Архитектура суверенных смыслов", url: SITE_URL }],
+  authors: [{ name: "Редакция АСС", url: "https://t.me/suveren_media" }],
   creator: "Архитектура суверенных смыслов",
   publisher: "Архитектура суверенных смыслов",
-  alternates: {
-    canonical: "/",
-    languages: {
-      "ru-RU": "/",
-    },
-  },
-  openGraph: {
-    type: "website",
-    locale: "ru_RU",
-    url: SITE_URL,
-    siteName: "Архитектура суверенных смыслов",
-    title: "Архитектура суверенных смыслов",
-    description:
-      "Аналитика. Технологии. Суверенитет. Трезвый ум как стратегическое преимущество.",
-    images: [
-      {
-        url: "/og/default.png",
-        width: 1200,
-        height: 630,
-        alt: "Архитектура суверенных смыслов",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Архитектура суверенных смыслов",
-    description:
-      "Аналитика. Технологии. Суверенитет. Трезвый ум как стратегическое преимущество.",
-    images: ["/og/default.png"],
-  },
+  applicationName: "АСС",
+  referrer: "strict-origin-when-cross-origin",
   robots: {
     index: true,
     follow: true,
@@ -84,19 +55,88 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
-  icons: {
-    icon: "/favicon.ico",
-    apple: "/favicon.ico",
+  alternates: {
+    canonical: "/",
+    languages: {
+      ru: "/",
+      en: "/?lang=en",
+    },
+    types: {
+      "application/rss+xml": "/feed.xml",
+    },
   },
-  category: "technology",
+  openGraph: {
+    type: "website",
+    locale: "ru_RU",
+    alternateLocale: "en_US",
+    url: SITE_URL,
+    siteName: "Архитектура суверенных смыслов",
+    title: "Архитектура суверенных смыслов — аналитика, IT, ИИ",
+    description:
+      "Аналитический блог о технологическом суверенитете, IT, ИИ и трезвом мышлении. Без воды, с фактами.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Архитектура суверенных смыслов",
+    description: "Аналитика · IT · ИИ. Трезво и по делу.",
+    creator: "@suveren_media",
+  },
+  icons: {
+    icon: "/icon",
+    shortcut: "/favicon.ico",
+    apple: "/icon",
+  },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#050608",
-  colorScheme: "dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#050608" },
+    { media: "(prefers-color-scheme: light)", color: "#f6f7f9" },
+  ],
+  colorScheme: "dark light",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
+};
+
+// === JSON-LD: Organization + WebSite ===
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "Архитектура суверенных смыслов",
+      url: SITE_URL,
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/icon`,
+      },
+      sameAs: [
+        "https://t.me/suveren_media",
+        "https://github.com/shekelstrong",
+      ],
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "Editorial",
+        email: "vasileneopekin@yandex.ru",
+        url: "https://t.me/suveren_media",
+      },
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: "Архитектура суверенных смыслов",
+      inLanguage: ["ru-RU", "en-US"],
+      publisher: { "@id": `${SITE_URL}/#organization` },
+      potentialAction: {
+        "@type": "SearchAction",
+        target: `${SITE_URL}/blog?q={search_term_string}`,
+        "query-input": "required name=search_term_string",
+      },
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -104,61 +144,25 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // JSON-LD: Organization + WebSite (для Knowledge Graph поисковиков и LLM)
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Organization",
-        "@id": `${SITE_URL}/#organization`,
-        name: "Архитектура суверенных смыслов",
-        url: SITE_URL,
-        logo: `${SITE_URL}/logo.png`,
-        sameAs: [
-          "https://t.me/sovereign_semantics",
-          "https://vk.com/sovereign_semantics",
-        ],
-        description:
-          "Аналитический блог о технологическом суверенитете, IT, ИИ и трезвом мышлении.",
-      },
-      {
-        "@type": "WebSite",
-        "@id": `${SITE_URL}/#website`,
-        url: SITE_URL,
-        name: "Архитектура суверенных смыслов",
-        inLanguage: "ru-RU",
-        publisher: { "@id": `${SITE_URL}/#organization` },
-        potentialAction: {
-          "@type": "SearchAction",
-          target: `${SITE_URL}/blog?q={search_term_string}`,
-          "query-input": "required name=search_term_string",
-        },
-      },
-    ],
-  };
-
   return (
     <html
       lang="ru"
-      className={`${inter.variable} ${jetbrainsMono.variable} dark`}
+      data-theme="dark"
+      className={`${inter.variable} ${jetbrains.variable}`}
       suppressHydrationWarning
     >
-      <head>
+      <body className="antialiased">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-      </head>
-      <body className="min-h-screen flex flex-col antialiased">
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <Providers>
+          <div className="min-h-screen flex flex-col">
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </div>
+        </Providers>
         <Analytics />
       </body>
     </html>

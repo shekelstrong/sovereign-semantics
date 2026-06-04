@@ -1,96 +1,100 @@
 import Link from "next/link";
+import { Mail, Send, Code2, MessageCircle, MapPin } from "lucide-react";
 
 export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-[var(--color-border)] bg-[var(--color-surface)] mt-32">
+    <footer className="border-t border-[var(--color-border)] bg-[var(--color-surface)] mt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+          {/* Brand */}
           <div>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="relative w-8 h-8 flex items-center justify-center">
-                <div className="absolute inset-0 border border-[var(--color-accent)] rounded-sm rotate-45" />
-                <span className="relative font-mono text-sm font-bold text-[var(--color-accent)]">
-                  А
-                </span>
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 border border-[var(--color-accent)] flex items-center justify-center rotate-45">
+                <span className="font-mono text-sm font-bold text-[var(--color-accent)] -rotate-45">А</span>
               </div>
-              <span className="font-mono text-sm uppercase tracking-wider text-[var(--color-foreground)]">
-                Архитектура суверенных смыслов
-              </span>
+              <span className="font-mono text-sm font-semibold">АСС</span>
             </div>
-            <p className="text-sm text-[var(--color-foreground-muted)] leading-relaxed max-w-sm">
-              Аналитический блог о технологическом суверенитете, IT, ИИ и
-              трезвом мышлении. Лонгриды, стратегии, практика.
+            <p className="text-sm text-[var(--color-foreground-muted)] leading-relaxed">
+              Трезвый ум · Ясный код · Технологический суверенитет
             </p>
           </div>
 
+          {/* Sections */}
           <div>
-            <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-foreground-muted)] mb-4">
-              Навигация
+            <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-foreground-muted)] mb-3">
+              Разделы
             </h3>
-            <ul className="space-y-2">
-              {[
-                { href: "/", label: "Главная" },
-                { href: "/blog", label: "Блог" },
-                { href: "/manifesto", label: "Манифест" },
-                { href: "/contact", label: "Контакты" },
-              ].map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className="text-sm text-[var(--color-foreground-muted)] hover:text-[var(--color-foreground)] transition-colors"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
+            <ul className="space-y-2 text-sm">
+              <li><Link href="/" className="hover:text-[var(--color-accent)] transition-colors">Главная</Link></li>
+              <li><Link href="/blog" className="hover:text-[var(--color-accent)] transition-colors">Блог</Link></li>
+              <li><Link href="/manifesto" className="hover:text-[var(--color-accent)] transition-colors">Манифест</Link></li>
+              <li><Link href="/contact" className="hover:text-[var(--color-accent)] transition-colors">Контакты</Link></li>
             </ul>
           </div>
 
+          {/* Contact */}
           <div>
-            <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-foreground-muted)] mb-4">
-              Каналы
+            <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-foreground-muted)] mb-3">
+              Контакты
             </h3>
-            <ul className="space-y-2">
+            <ul className="space-y-2 text-sm">
               <li>
                 <a
-                  href="https://t.me/sovereign_semantics"
+                  href="https://t.me/suveren_media"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-[var(--color-foreground-muted)] hover:text-[var(--color-accent)] transition-colors"
+                  className="flex items-center gap-2 hover:text-[var(--color-accent)] transition-colors"
                 >
-                  Telegram →
+                  <Send className="w-3.5 h-3.5" /> Telegram
                 </a>
               </li>
               <li>
                 <a
-                  href="https://vk.com/sovereign_semantics"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-[var(--color-foreground-muted)] hover:text-[var(--color-accent)] transition-colors"
+                  href="mailto:vasileneopekin@yandex.ru"
+                  className="flex items-center gap-2 hover:text-[var(--color-accent)] transition-colors"
                 >
-                  VK →
+                  <Mail className="w-3.5 h-3.5" /> Email
                 </a>
               </li>
               <li>
                 <a
-                  href="mailto:hello@sovereign-semantics.ru"
-                  className="text-sm text-[var(--color-foreground-muted)] hover:text-[var(--color-accent)] transition-colors"
+                  href="https://github.com/shekelstrong"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 hover:text-[var(--color-accent)] transition-colors"
                 >
-                  Email →
+                  <Code2 className="w-3.5 h-3.5" /> GitHub
                 </a>
               </li>
             </ul>
+          </div>
+
+          {/* Legal */}
+          <div>
+            <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-foreground-muted)] mb-3">
+              Подписаться
+            </h3>
+            <p className="text-sm text-[var(--color-foreground-muted)] mb-3">
+              Аналитика · IT · ИИ. Без воды.
+            </p>
+            <a
+              href="https://t.me/suveren_media"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-3 py-1.5 bg-[var(--color-accent)] text-[var(--color-accent-foreground)] font-mono text-xs uppercase tracking-wider hover:shadow-[0_0_20px_var(--color-accent-glow)] transition-shadow"
+            >
+              <MessageCircle className="w-3.5 h-3.5" /> @suveren_media
+            </a>
           </div>
         </div>
 
-        <div className="pt-8 border-t border-[var(--color-border)] flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="font-mono text-xs uppercase tracking-wider text-[var(--color-foreground-subtle)]">
-            © {year} Архитектура суверенных смыслов
-          </p>
-          <p className="font-mono text-xs uppercase tracking-wider text-[var(--color-foreground-subtle)]">
-            Трезвый ум · Ясный код · Суверенитет
+        <div className="pt-6 border-t border-[var(--color-border)] flex flex-wrap items-center justify-between gap-3 text-xs font-mono text-[var(--color-foreground-subtle)]">
+          <p>© {year} Архитектура суверенных смыслов. Все права защищены.</p>
+          <p className="flex items-center gap-2">
+            <span className="inline-block w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] animate-pulse" />
+            v1.0 · Москва
           </p>
         </div>
       </div>
