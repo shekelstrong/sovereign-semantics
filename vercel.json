@@ -3,8 +3,27 @@
   "redirects": [
     {
       "source": "/feed.xml",
-      "destination": "/ru/feed.xml",
+      "has": [
+        {
+          "type": "header",
+          "key": "accept-language",
+          "value": ".*en.*"
+        }
+      ],
+      "destination": "/en/feed.xml",
       "statusCode": 307
+    },
+    {
+      "source": "/feed.xml",
+      "destination": "/ru/feed.xml",
+      "statusCode": 307,
+      "missing": [
+        {
+          "type": "header",
+          "key": "accept-language",
+          "value": ".*en.*"
+        }
+      ]
     }
   ]
 }
