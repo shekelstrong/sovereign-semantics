@@ -50,9 +50,10 @@ export function middleware(req: NextRequest) {
   // Не-локализованный путь → редирект на дефолтную локаль
   if (STATIC_PATHS.includes(pathname)) {
     const target = detectLocaleFromRequest(req);
+    // Для ru и en ВСЕГДА добавляем префикс локали — иначе / → / = бесконечный цикл
     const newPath = target === "en"
       ? (pathname === "/" ? "/en" : `/en${pathname}`)
-      : pathname; // ru — без префикса
+      : (pathname === "/" ? "/ru" : `/ru${pathname}`);
     const url = req.nextUrl.clone();
     url.pathname = newPath;
     url.search = search;
