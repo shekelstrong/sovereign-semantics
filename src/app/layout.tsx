@@ -1,10 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@/components/Analytics";
+import { VercelAnalytics } from "@/components/VercelAnalytics";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Providers } from "@/components/Providers";
 import { LangHtml } from "@/components/LangHtml";
+import { BreadcrumbsJsonLd } from "@/components/BreadcrumbsJsonLd";
 import "./globals.css";
 
 const inter = Inter({
@@ -163,6 +165,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <BreadcrumbsJsonLd />
         <LangHtml />
         <Providers>
           <div className="min-h-screen flex flex-col">
@@ -172,6 +175,7 @@ export default function RootLayout({
           </div>
         </Providers>
         <Analytics />
+        <VercelAnalytics />
       </body>
     </html>
   );
