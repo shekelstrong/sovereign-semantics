@@ -1,15 +1,13 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const size = { width: 32, height: 32 };
+export const size = { width: 180, height: 180 };
 export const contentType = "image/png";
 
 /**
- * Favicon: emerald-гексагон с infinity/S-curve внутри.
- * Символ Sovereign Semantics — гексагон (структура, суверенитет) + ∞ (смысловые сети, непрерывность).
- * Видно на светлой и тёмной вкладке.
+ * Apple touch icon (180x180): то же лого, но крупнее и с padding под iOS rounded mask.
  */
-export default function Icon() {
+export default function AppleIcon() {
   return new ImageResponse(
     (
       <div
@@ -24,24 +22,22 @@ export default function Icon() {
       >
         <svg
           viewBox="0 0 100 100"
-          width="32"
-          height="32"
+          width="150"
+          height="150"
           xmlns="http://www.w3.org/2000/svg"
         >
-          {/* Гексагон-рамка (pointy-top) */}
           <polygon
             points="50,6 90,28 90,72 50,94 10,72 10,28"
             fill="none"
             stroke="#10b981"
-            strokeWidth="6"
+            strokeWidth="5"
             strokeLinejoin="round"
           />
-          {/* Infinity / S-curve */}
           <path
             d="M 30 50 C 30 35, 45 35, 50 50 C 55 65, 70 65, 70 50 C 70 35, 55 35, 50 50 C 45 65, 30 65, 30 50 Z"
             fill="none"
             stroke="#10b981"
-            strokeWidth="5"
+            strokeWidth="4"
             strokeLinecap="round"
           />
         </svg>
