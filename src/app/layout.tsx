@@ -7,6 +7,7 @@ import { Footer } from "@/components/Footer";
 import { Providers } from "@/components/Providers";
 import { LangHtml } from "@/components/LangHtml";
 import { BreadcrumbsJsonLd } from "@/components/BreadcrumbsJsonLd";
+import { YandexMetrika } from "@/components/YandexMetrika";
 import "./globals.css";
 
 const inter = Inter({
@@ -176,6 +177,7 @@ export default function RootLayout({
         </Providers>
         <Analytics />
         <VercelAnalytics />
+        <YandexMetrika />
       </body>
     </html>
   );

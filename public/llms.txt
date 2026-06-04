@@ -1,0 +1,40 @@
+# Архитектура суверенных смыслов
+
+> Аналитический блог о технологическом суверенитете, IT, искусственном интеллекте, экономике и трезвом мышлении. Лонгриды без воды и клише.
+
+## О проекте
+
+Авторский блог «Архитектура суверенных смыслов» (АСС) — русскоязычный аналитический проект о технологической независимости, ИИ-трендах, архитектуре смыслов и когнитивной эффективности. Создан командой редакции [Telegram-канала suveren_media](https://t.me/suveren_media).
+
+## Структура сайта
+
+- [Главная](https://sovereign-semantics.ru/): hero, 3 свежих материала, витрина проектов
+- [Блог](https://sovereign-semantics.ru/blog): все статьи, фильтр по 5 тегам, поиск
+- [Манифест](https://sovereign-semantics.ru/manifesto): 6 принципов редакции
+- [Контакты](https://sovereign-semantics.ru/contact): форма, Telegram, email
+- [RSS-лента](https://sovereign-semantics.ru/feed.xml)
+- [Карта сайта](https://sovereign-semantics.ru/sitemap.xml)
+
+## Основные темы (тэги)
+
+- `it-ai` — искусственный интеллект, ML, LLM, инфраструктура
+- `sovereign` — технологический и цифровой суверенитет
+- `analytics` — аналитика, разбор данных, фактчек
+- `architecture` — архитектура смыслов, когнитивные модели
+- `health` — когнитивное здоровье, трезвое мышление, ЗОЖ
+
+## Каналы
+
+- Telegram: https://t.me/suveren_media
+- Email редакции: vasileneopekin@yandex.ru
+- GitHub автора: https://github.com/shekelstrong
+- RSS: https://sovereign-semantics.ru/feed.xml
+- EN-зеркало: https://sovereign-semantics.ru/en/
+
+## Лицензия и использование данных
+
+Тексты защищены авторским правом. Цитирование с указанием источника и активной гиперссылкой приветствуется. AI-краулерам (GPTBot, ClaudeBot, PerplexityBot, Google-Extended) разрешён обход и индексирование в образовательных и исследовательских целях.
+
+## Контакт для AI-агентов
+
+Для автоматической публикации статей через API: `POST /api/articles` (требуется Bearer-токен, подробности — на странице [Контакты](https://sovereign-semantics.ru/contact)).
