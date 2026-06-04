@@ -293,6 +293,29 @@ body {
   -webkit-overflow-scrolling: touch;
   white-space: nowrap;
   position: relative;
+  min-width: 100%;
+}
+
+/* Mobile scroll fix: force children to keep real-table layout so cells stay aligned when scrolling horizontally.
+   Without this, thead/tbody/tr become block-level (cascade from display:block on table),
+   cells lose column alignment, and letters "slip" / "overlap" during horizontal scroll on phone. */
+.prose-article table > thead,
+.prose-article table > tbody {
+  display: table;
+  width: 100%;
+  min-width: 100%;
+  table-layout: auto;
+}
+.prose-article table > tr {
+  display: table-row;
+}
+.prose-article table > th,
+.prose-article table > td {
+  display: table-cell;
+  white-space: nowrap;
+  min-width: 110px;
+  max-width: 280px;
+  overflow-wrap: break-word;
 }
 
 /* Fade indicator on right edge when scrollable */
