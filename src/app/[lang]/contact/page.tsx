@@ -5,7 +5,7 @@ import { Send, Lock, Mail, Code2 } from "lucide-react";
 import { isValidLocale } from "@/lib/dict";
 import type { Locale } from "@/lib/articles-types";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sovereign-semantics.ru";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sovereign-semantics.vercel.app";
 
 export async function generateStaticParams() {
   return [{ lang: "ru" }, { lang: "en" }];

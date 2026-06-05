@@ -11,7 +11,7 @@ import { routes } from "@/lib/routes";
 import { notFound } from "next/navigation";
 
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://sovereign-semantics.ru";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://sovereign-semantics.vercel.app";
 
 export async function generateMetadata({
   params,

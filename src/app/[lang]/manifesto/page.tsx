@@ -7,7 +7,7 @@ import { routes } from "@/lib/routes";
 import type { Locale as L } from "@/lib/articles-types";
 import { getDict } from "@/lib/dict";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sovereign-semantics.ru";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sovereign-semantics.vercel.app";
 
 export async function generateStaticParams() {
   return [{ lang: "ru" }, { lang: "en" }];

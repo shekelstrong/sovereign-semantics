@@ -94,8 +94,8 @@ export async function POST(req: Request) {
           Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
         },
         body: JSON.stringify({
-          from: "sovereign-semantics <noreply@sovereign-semantics.ru>",
-          to: ["hello@sovereign-semantics.ru"],
+          from: "sovereign-semantics <noreply@sovereign-semantics.vercel.app>",
+          to: ["hello@sovereign-semantics.vercel.app"],
           subject: `[${topicLabels[body.topic]}] ${body.name}`,
           text: `От: ${body.name} <${body.email}>\n\n${body.message}`,
         }),

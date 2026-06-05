@@ -28,7 +28,7 @@ const LABELS: Record<"ru" | "en", Record<"blog" | "manifesto" | "contact", strin
 };
 
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://sovereign-semantics.ru";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://sovereign-semantics.vercel.app";
 
 function buildBreadcrumbs(pathname: string) {
   // Убираем локальный префикс для парсинга, но сохраняем для ссылок

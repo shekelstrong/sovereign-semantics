@@ -16,7 +16,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { lang } = await params;
   const isEn = lang === "en";
-  const SITE = process.env.NEXT_PUBLIC_SITE_URL || "https://sovereign-semantics.ru";
+  const SITE = process.env.NEXT_PUBLIC_SITE_URL || "https://sovereign-semantics.vercel.app";
   return {
     title: isEn ? "Blog" : "Блог",
     description: isEn

@@ -144,7 +144,7 @@ export default async function Image() {
             zIndex: 1,
           }}
         >
-          <span>sovereign-semantics.ru</span>
+          <span>sovereign-semantics.vercel.app</span>
           <span>t.me/sovereign_semantics</span>
         </div>
       </div>
