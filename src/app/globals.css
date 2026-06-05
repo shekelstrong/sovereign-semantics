@@ -276,9 +276,7 @@ body {
   width: 100%;
 }
 
-/* Tables
-   Mobile: scrollable horizontally with fade-edge indicator.
-   Desktop: fixed layout, sticky header on long tables, hover accent. */
+/* Tables — mobile horizontal scroll, desktop natural */
 .prose-article table {
   width: 100%;
   border-collapse: separate;
@@ -288,74 +286,9 @@ body {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-surface);
-  display: table;
-  table-layout: auto;
-  min-width: 100%;
-}
-
-/* Mobile: wrap table in scrollable container via overflow on prose-article */
-@media (max-width: 767px) {
-  .prose-article {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  .prose-article table {
-    min-width: 640px;
-    margin-left: 0;
-    margin-right: 0;
-  }
-}
-
-.prose-article table > thead,
-.prose-article table > tbody {
-  display: table-header-group;
-  display: table-row-group;
-  width: 100%;
-}
-.prose-article table > tr {
-  display: table-row;
-}
-.prose-article table > th,
-.prose-article table > td {
-  display: table-cell;
-  white-space: normal;
-  word-break: break-word;
-  min-width: 120px;
-  padding: 0.75rem 1rem;
-}
-
-/* Desktop: allow wider cells */
-@media (min-width: 768px) {
-  .prose-article table > th,
-  .prose-article table > td {
-    white-space: nowrap;
-    min-width: 140px;
-    max-width: 320px;
-  }
-}
-
-/* Fade indicator on right edge when scrollable */
-.prose-article table::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 32px;
-  height: 100%;
-  background: linear-gradient(to right, transparent, var(--color-surface) 80%);
-  pointer-events: none;
-  border-top-right-radius: var(--radius-md);
-  border-bottom-right-radius: var(--radius-md);
-  opacity: 0.8;
-}
-
-@media (min-width: 768px) {
-  .prose-article table {
-    display: table;
-    white-space: normal;
-    table-layout: auto;
-  }
-  .prose-article table::after { display: none; }
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .prose-article thead {
@@ -373,53 +306,27 @@ body {
   text-align: left;
   border-bottom: 1px solid var(--color-accent);
   white-space: nowrap;
-  position: sticky;
-  top: 0;
-  background: var(--color-surface-elevated);
-  z-index: 1;
-}
-
-.prose-article thead th:first-child {
-  border-top-left-radius: calc(var(--radius-md) - 1px);
-}
-
-.prose-article thead th:last-child {
-  border-top-right-radius: calc(var(--radius-md) - 1px);
 }
 
 .prose-article tbody tr {
-  transition: background 0.15s ease;
-  border-bottom: 1px solid var(--color-border-subtle);
-}
-
-.prose-article tbody tr:last-child {
-  border-bottom: none;
-}
-
-.prose-article tbody tr:hover {
-  background: var(--color-accent-glow);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .prose-article tbody td {
   padding: 0.875rem 1rem;
-  color: var(--color-foreground);
-  vertical-align: top;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.9375rem;
   line-height: 1.6;
-  white-space: normal;
+  vertical-align: top;
 }
 
 .prose-article tbody td code {
   font-size: 0.8125rem;
   padding: 0.125rem 0.375rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-elevated);
+  border: 1px solid var(--color-border);
 }
-
-/* Compact variant for long reference tables — triggered when class="compact" is set via raw HTML */
-.prose-article table.compact tbody td,
-.prose-article table.compact thead th {
-  padding: 0.5rem 0.75rem;
-  font-size: 0.875rem;
-}
-
 /* === FOCUS === */
 :focus-visible {
   outline: 2px solid var(--color-accent);

@@ -136,5 +136,6 @@ readingTime: "9"
 
 Выбор — за нами. Пока мы не проснулись.
 
-[^1]: Statista, "Digital Advertising Worldwide — Statistics & Facts", 2025. https://www.statista.com/topics/1002/online-advertising/
-[^2]: MIT Media Lab, "The spread of low-credibility content by social bots", 2026. https://www.media.mit.edu/publications/
+[^1]: [Statista, "Digital Advertising Worldwide — Statistics & Facts", 2025](https://www.statista.com/topics/1002/online-advertising/)
+
+[^2]: [MIT Media Lab, "The spread of low-credibility content by social bots", 2026](https://www.media.mit.edu/publications/)
