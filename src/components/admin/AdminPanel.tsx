@@ -84,6 +84,7 @@ export function AdminPanel() {
     type: "ok" | "err" | "info";
     text: string;
   } | null>(null);
+  const [generatingCover, setGeneratingCover] = useState(false);
 
   // Init: load token from localStorage
   useEffect(() => {
