@@ -13,8 +13,14 @@ import path from "node:path";
  * Если OPENROUTER_API_KEY не задан — бросает ошибку.
  */
 const OPENROUTER_ENDPOINT = "https://openrouter.ai/api/v1/chat/completions";
+// 2026-06-06: дефолт — sourceful/riverflow-v2.5-pro:free (единственная free image-gen модель
+// в OpenRouter на июнь 2026, released 2026-06-04, ~219s latency, ~33% uptime в первые дни).
+// Sourceful НЕ принимает `modalities: ["image","text"]` — иначе 404. См. ниже.
+// Fallback на `google/gemini-3.1-flash-image-preview` (платный, $0.0000003/img, 6s, стабильный)
+// — там modalities обязательны. Переключение делается через env `OPENROUTER_IMAGE_MODEL`.
+// История фиксов: [[Secrets-Vault-2026-06-06#Известная-проблема-OPENROUTER_IMAGE_MODEL]].
 const IMAGE_MODEL =
-  process.env.OPENROUTER_IMAGE_MODEL || "google/gemini-2.5-flash-image";
+  process.env.OPENROUTER_IMAGE_MODEL || "sourceful/riverflow-v2.5-pro:free";
 const COVERS_DIR = path.join(process.cwd(), "public", "covers");
 
 interface OpenRouterImageResponse {
@@ -52,6 +58,24 @@ export async function generateCover(
 
 Style: dark mode, emerald green and cold neon blue accents, hyperrealistic, 8k, architectural visualization, conceptual tech art, cinematic lighting, depth of field. Strictly no text, no logos, no watermarks, no letters, no words on the image itself.`;
 
+  // Sourceful (любая модель с id, начинающимся на "sourceful/") не принимает поле
+  // `modalities` — отдаёт 404 "No endpoints found that support the requested output
+  // modalities". Для всех остальных моделей (Gemini, GPT-Image и т.п.) modalities
+  // обязательны. Подробнее: skill `openrouter-image-gen`.
+  const isSourceful = IMAGE_MODEL.startsWith("sourceful/");
+  const requestBody: Record<string, unknown> = {
+    model: IMAGE_MODEL,
+    messages: [
+      {
+        role: "user",
+        content: enhancedPrompt,
+      },
+    ],
+  };
+  if (!isSourceful) {
+    requestBody.modalities = ["image", "text"];
+  }
+
   const response = await fetch(OPENROUTER_ENDPOINT, {
     method: "POST",
     headers: {
@@ -60,16 +84,7 @@ Style: dark mode, emerald green and cold neon blue accents, hyperrealistic, 8k, 
       "HTTP-Referer": process.env.NEXT_PUBLIC_SITE_URL || "https://sovereign-semantics.vercel.app",
       "X-Title": "Sovereign Semantics",
     },
-    body: JSON.stringify({
-      model: IMAGE_MODEL,
-      messages: [
-        {
-          role: "user",
-          content: enhancedPrompt,
-        },
-      ],
-      modalities: ["image", "text"],
-    }),
+    body: JSON.stringify(requestBody),
   });
 
   if (!response.ok) {
