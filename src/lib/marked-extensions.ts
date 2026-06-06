@@ -35,8 +35,10 @@ export function registerWikiAliases(aliases: Record<string, string>) {
   }
 }
 
-// Inline tokenizer: [[...]] до любого whitespace/punct
-const WIKI_LINK_RE = /\[\[([^\[\]]+?)\]\]/g;
+// Inline tokenizer: [[...]] до любого whitespace/punct.
+// ВАЖНО: regex ДОЛЖЕН быть anchored с ^ — иначе marked v18 считает raw[0] 
+// не от начала токена, и consumption ломается (хвост `]]` остаётся в HTML).
+const WIKI_LINK_RE = /^\[\[([^\[\]]+?)\]\]/;
 
 export function installWikiLinks() {
   marked.use({
@@ -57,6 +59,10 @@ export function installWikiLinks() {
             inner: inner.trim(),
           };
         },
+        // Marked v18: nested inline tokens (если inner содержит `|`) парсятся 
+        // отдельно и ломают consumption. Возвращаем их как plain tokens.
+        // Решение: если в inner есть `|`, рендерим inner как plain text, 
+        // а slug/target парсим сами.
         renderer(token: any) {
           const inner: string = token.inner;
           const locale = opts.defaultLocale || "ru";
