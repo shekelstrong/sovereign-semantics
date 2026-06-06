@@ -21,6 +21,8 @@ export interface Article {
   updated?: string;
   tags: ArticleTag[];
   cover?: string;
+  /** OG-обложка 1200x630 (1.91:1) для соцсетей/Telegram. Fallback: cover */
+  ogCover?: string;
   coverPrompt?: string;
   readingTime?: number;
   content: string;

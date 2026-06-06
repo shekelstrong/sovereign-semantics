@@ -1,0 +1,84 @@
+~version: "2.1"
+
+# ============================================================================
+# Instant View Template: suveren-landing.vercel.app
+# Source: https://suveren-landing.vercel.app/blog/<slug> (RU/EN)
+# Target: Blog articles only
+# Author: Редакция АСС
+# Updated: 2026-06-06
+# ============================================================================
+
+# Channel (Telegram channel linked from IV page)
+channel: "@suveren_media"
+
+# Main article container
+body: //article
+
+# --- TITLE ---
+title: //article//h1[1]
+
+# --- AUTHOR + DATE ---
+# The breadcrumb/date row (e.g. "2026-06-06 · it-ai · economy · 14 min")
+subtitle: $body//div[has-class("mb-6 p-3 border")]//p[1]
+@remove: $body//div[has-class("mb-6 p-3 border")]  # breadcrumb box, already used as subtitle
+
+# --- COVER IMAGE ---
+# Use og:image as primary; fallback to first <img> in body
+cover_url: //meta[@property="og:image"]/@content
+?cover_url
+  cover: $cover_url
+:
+
+# --- TAGS ---
+# Tags are rendered as pills — extract as inline text after "Теги:" or first
+@remove: $body//div[has-class("flex flex-wrap gap-2 mb-6")]
+
+# --- MAIN CONTENT (markdown body) ---
+# The actual article prose is inside a div with class containing "prose-article"
+# or the inner wrapper with "max-w-3xl"
+content: $body//div[has-class("prose-article")][1]
+@append_to($body): $content
+
+# --- DESCRIPTION (subtitle) ---
+# The lead paragraph is a <p> with class "text-lg" — keep as paragraph
+# (no transformation needed, just let it render naturally)
+
+# --- TABLES, BLOCKQUOTES, LISTS ---
+# All standard HTML elements are supported, no transformation needed.
+
+# --- IMAGES ---
+# Images inside <p> or as siblings — keep as-is, IV will auto-resize.
+# Make sure to remove any "loading=lazy" attrs since IV doesn't need them.
+@set_attr(src, @src): $body//img
+@remove: $body//img/@loading
+
+# --- WIKI-LINKS ---
+# Anchor tags with class "wiki-link" — keep, but ensure relative URLs are absolute
+@replace("href=\"/blog/", "href=\"https://suveren-landing.vercel.app/blog/"): $body//a
+@replace("href=\"/en/blog/", "href=\"https://suveren-landing.vercel.app/en/blog/"): $body//a
+@replace("href=\"/ru/blog/", "href=\"https://suveren-landing.vercel.app/ru/blog/"): $body//a
+
+# --- FAQ SECTION (rendered by FAQBlock) ---
+# The FAQ uses <details>/<summary> elements. Keep as-is — IV supports <details>.
+# FAQ is inside body, not separate — no need to handle.
+
+# --- RELATED ARTICLES ---
+# "related" or "Похожие материалы" section at the bottom
+@remove: $body//*[has-class("related") or has-class("related-articles")]
+@remove: $body//h2[normalize-space()="Похожие материалы" or normalize-space()="Читайте также"]
+
+# --- CTA (call-to-action) ---
+# CTA is at the bottom of the article, links to https://t.me/suveren_media
+# Telegram IV auto-renders <a href="https://t.me/..."> as "Open Channel" button
+# Just keep it as-is.
+
+# --- JSON-LD (no need to render as HTML) ---
+@remove: //script[@type="application/ld+json"]
+
+# --- COMMENTS / SHARE / FOOTER NOISE ---
+@remove: $body//*[has-class("share") or has-class("comments") or has-class("footer")]
+@remove: $body//*[has-class("ad-") or has-class("advertisement")]
+
+# --- LIMIT ---
+# Optional: limit article length to 80 000 chars
+<50 000: $body  # typical article is well under this

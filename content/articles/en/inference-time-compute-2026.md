@@ -8,6 +8,7 @@ tags:
 author: "ASS Editorial"
 readingTime: 12
 cover: "/blog/inference-time-compute-2026-cover.jpg"
+ogCover: "/blog/inference-time-compute-2026-og.jpg"
 coverPrompt: "Cinematic visualization of a single glowing GPU die splitting into a fractal cascade of branching decision trees, each path lit by emerald circuits, the deepest path burning brightest in terminator-vision gold, dark cyberpunk background, hyperrealistic macro detail, 8k, aspect 16:9, no text, no letters, no watermark"
 cta:
   label: "Raw reasoning-model benchmarks across 12 tasks + cost-per-task script — in the channel"

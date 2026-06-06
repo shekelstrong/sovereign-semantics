@@ -154,6 +154,7 @@ function parseArticleFile(filename: string, locale: Locale): Article | null {
         : undefined,
       tags: (data.tags as ArticleTag[]) || [],
       cover: data.cover as string | undefined,
+      ogCover: data.ogCover as string | undefined,
       coverPrompt: data.coverPrompt as string | undefined,
       readingTime: (data.readingTime as number) || readingTime(content),
       content,

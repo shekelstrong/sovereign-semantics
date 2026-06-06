@@ -10,6 +10,7 @@ cta:
   label: "Архитектура суверенных смыслов — Telegram"
   href: "https://t.me/suveren_media"
 cover: "/blog/arbitrazh-vnimaniya-cover.jpg"
+ogCover: "/blog/arbitrazh-vnimaniya-cover.jpg"
 readingTime: "9"
 ---
 

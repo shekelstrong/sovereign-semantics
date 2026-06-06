@@ -69,10 +69,12 @@ export async function generateMetadata({
       modifiedTime: article.updated || article.date,
       authors: [article.author || (isEn ? "Editorial" : "Редакция")],
       tags: article.tags.map((t) => getTagLabel(t, locale)),
-      images: article.cover
+      // OG-image: 1200x630 (1.91:1) — стандарт Telegram/FB/LinkedIn/VK.
+      // Fallback на cover если ogCover не задан.
+      images: (article.ogCover || article.cover)
         ? [
             {
-              url: article.cover,
+              url: article.ogCover || article.cover!,
               width: 1200,
               height: 630,
               alt: article.title,
