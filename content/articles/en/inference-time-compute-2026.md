@@ -41,7 +41,7 @@ o1 broke that linearity. On AIME 2024 (olympiad math): GPT-4o scored 13%, o1 sco
 
 What changed was the **compute profile**. o1 does not 'know more' — it *spends more compute per answer*. Internally, the model generates hidden draft tokens, self-checks, revises, prunes branches. One user request triggers 50 to 500 internal iterations. This is **inference-time compute** (a.k.a. **test-time compute scaling**).
 
-> The [[arbitrazh-vnimaniya-pochemu-ii-agenty-povtoryayut-biznes-model-trafik-menedzherov|piece on attention arbitrage]] covers the parallel story: agents reproduce the traffic-manager architecture, the same proxies, the same monetisation. This piece is about the economics under the hood. The two are inseparable: for agents to trade in meaning, they must 'think', and that costs money.
+> The [[arbitrazh-vnimaniya-pochemu-ii-agenty-povtoryayut-biznes-model-trafik-menedzherov]] covers the parallel story: agents reproduce the traffic-manager architecture, the same proxies, the same monetisation. This piece is about the economics under the hood. The two are inseparable: for agents to trade in meaning, they must 'think', and that costs money.
 
 Two and a half years ago, asking an LLM to 'think longer' meant chain-of-thought prompting (Wei et al., 2022). It worked, but did not scale: the model would *pretend* to think and quickly collapse into errors. o1 demonstrated that **real** scaling comes from RL training on reasoning chains themselves: the model learns not to give the right answer, but to **find the right path to the answer** (Lightman et al., 2023, "Let's verify step by step").
 
@@ -81,7 +81,7 @@ For agent architects, this is **the main shift**: routing inside the agent is no
 
 A parallel 2025-2026 trend: context windows grew from 128K to 1M-10M tokens (Gemini 2.5 Pro, Llama 4). This is not exactly inference-time compute, but it is connected: long context is also compute spent at response time. Processing 1M tokens costs ~30 seconds of GPU time *before* the model generates any answer.
 
-> Readers already familiar with the [[arbitrazh-vnimaniya-pochemu-ii-agenty-povtoryayut-biznes-model-trafik-menedzherov|breakdown of agents and traffic managers]] will see the contrast: there the agents *bought attention*. Here they *buy compute*. The market is the same; the currency is different.
+> Readers already familiar with the [[arbitrazh-vnimaniya-pochemu-ii-agenty-povtoryayut-biznes-model-trafik-menedzherov]] will see the contrast: there the agents *bought attention*. Here they *buy compute*. The market is the same; the currency is different.
 
 ## Case: how Cursor rebuilt its architecture on o1
 
@@ -107,24 +107,3 @@ This delivered a **5x** drop in cost per IDE-hour of work, with quality rising (
 
 6. **Prepare for on-device reasoning-as-a-service.** Qualcomm, Apple Neural Engine, and MediaTek APU all show reasoning models in the 3-7B range running on mobile silicon (late 2026 - early 2027). That will shift part of inference-time compute from cloud to device, with a corresponding shift in unit economics.
 
-## FAQ
-
-**What is inference-time compute in plain terms?**
-
-It is the model's ability to spend more compute *during the response*, not only during training. Instead of one direct pass, the model runs tens or hundreds of internal iterations, branches, and self-checks. Analogy: not 'fire off the answer', but 'sit down and think'.
-
-**Why is OpenAI o1 3-6x more expensive than GPT-4o?**
-
-Because o1 generates 10-100x more tokens per task under the hood. Every 'reasoning' token is a full forward pass through the transformer. The per-million-token price is higher not because of markup, but because of the physical volume of compute.
-
-**Is DeepSeek R1 really cheaper than o1?**
-
-Yes: $0.55 vs $15 per 1M input tokens and $2.19 vs $60 per 1M output (as of June 2026). With comparable quality on math benchmarks. This was the first public proof that reasoning models can be trained and hosted 20-30x cheaper than OpenAI does it.
-
-**Who benefits from 'thinking longer'?**
-
-High-stakes tasks: legal analysis, medical hypotheses, code audit, complex financial calculations. Mass chat, translation, and simple questions do not benefit. There, inference-time compute is a waste.
-
-**What does this mean for AI agent developers?**
-
-Three consequences. (1) Agent architecture is now a *model-calling strategy*: which task to give a fast model, which to give a reasoning one. (2) Budget per workflow must be measured in cost-per-task, not cost-per-token. (3) Open reasoning models (R1, Qwen-QwQ) make self-hosting economically viable for teams processing 10+ requests per second.
