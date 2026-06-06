@@ -25,7 +25,20 @@ function readingTime(text: string): number {
 }
 
 function ensureDir(dir: string): void {
-  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  // 2026-06-06: в Vercel production runtime `/var/task` read-only, поэтому
+  // `mkdirSync('/var/task/content/articles/en')` падает с ENOENT даже при
+  // recursive: true (родитель тоже read-only). Не критично — просто считаем,
+  // что папка недоступна; `readdirSync` ниже вернёт ENOENT и обработается.
+  try {
+    fs.mkdirSync(dir, { recursive: true });
+  } catch (err) {
+    if ((err as NodeJS.ErrnoException).code === "ENOENT") {
+      // Родитель не существует и недоступен для создания (read-only FS).
+      // В production list вернётся пустым — это ожидаемо для /api/articles-list.
+      return;
+    }
+    throw err;
+  }
 }
 
 function validateFrontmatter(data: Record<string, unknown>): void {
@@ -53,9 +66,17 @@ export async function getAllArticles(
   for (const loc of locales) {
     const dir = dirFor(loc);
     ensureDir(dir);
-    const files = fs
-      .readdirSync(dir)
-      .filter((f) => f.endsWith(".md") || f.endsWith(".mdx"));
+    let files: string[] = [];
+    try {
+      files = fs
+        .readdirSync(dir)
+        .filter((f) => f.endsWith(".md") || f.endsWith(".mdx"));
+    } catch (err) {
+      // 2026-06-06: в Vercel read-only FS папка локали может быть недоступна —
+      // пропускаем локаль, а не валим весь list.
+      if ((err as NodeJS.ErrnoException).code === "ENOENT") continue;
+      throw err;
+    }
     for (const f of files) {
       const article = parseArticleFile(f, loc);
       if (article && (opts.includeDrafts || !article.draft)) {
