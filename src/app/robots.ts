@@ -34,7 +34,8 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
     ],
+    // sitemap: достаточно. `host` убран — Google deprecated в 2023, оставление
+    // может вызывать warning в Search Console.
     sitemap: `${SITE_URL}/sitemap.xml`,
-    host: SITE_URL,
   };
 }
