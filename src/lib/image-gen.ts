@@ -2,14 +2,19 @@ import fs from "node:fs/promises";
 import path from "node:path";
 
 /**
- * Генерация обложки через OpenRouter (модель google/gemini-3.1-flash-image-preview,
- * a.k.a. Nano Banana 2).
+ * Генерация обложки через OpenRouter.
+ *
+ * Модель берётся из env `OPENROUTER_IMAGE_MODEL` (дефолт:
+ * `sourceful/riverflow-v2.5-pro:free`). Зафиксировано по решению
+ * владельца проекта, чтобы обложки сайта и любые ad-hoc генерации
+ * в чат-боте шли через одну и ту же модель.
  *
  * Возвращает публичный URL (относительный) сохранённой обложки.
  * Если OPENROUTER_API_KEY не задан — бросает ошибку.
  */
 const OPENROUTER_ENDPOINT = "https://openrouter.ai/api/v1/chat/completions";
-const IMAGE_MODEL = "google/gemini-3.1-flash-image-preview";
+const IMAGE_MODEL =
+  process.env.OPENROUTER_IMAGE_MODEL || "google/gemini-2.5-flash-image";
 const COVERS_DIR = path.join(process.cwd(), "public", "covers");
 
 interface OpenRouterImageResponse {
